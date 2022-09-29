@@ -4,27 +4,34 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    private static readonly float moveCheckDistance = 1.0f;
 
-    // Start is called before the first frame update
-    private void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    private void Update()
-    {
-
-    }
-
-    // Move player to the given direction
+    // Move player to the given direction, called in FixedUpdate
     public void Move(Vector3 direction)
     {
-        // Check Collision object in front of the user's direction
-        // Detect if any collision wall in the given direction
-        // Detect if any collision box in the given direction
-        // Move if no collision
-        Debug.Log("direction" + direction);
+        // Check Collision object in front of player's direction
+        RaycastHit hitInfo;
+        if (Physics.Raycast(transform.position, direction, out hitInfo, moveCheckDistance))
+        {
+            // Has collision
+            GameObject other = hitInfo.collider.gameObject;
+            if (other.CompareTag("Wall"))
+            {
+                // Collision with wall, can not move
+                return;
+            }
+            if (other.CompareTag("Box"))
+            {
+                // Collision with Box, try to move the Box
+                if (!other.GetComponent<ObjectController>().TryMove(direction))
+                {
+                    // Box not moved
+                    return;
+                }
+            }
+        }
+
+        // No collision or box moved, player move
         transform.position += direction;
     }
 }
