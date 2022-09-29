@@ -1,0 +1,7 @@
+# Editor config for Visual Studio
+
+root = true
+
+# All files
+[*]
+charset = utf-8
