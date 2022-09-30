@@ -1,12 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    private static readonly float moveCheckDistance = 1.0f;
+    private const float moveCheckDistance = 1.0f;
+    [SerializeField] private GameManager gameManager;
 
-    // Move player to the given direction, called in FixedUpdate
+    /// <summary>
+    /// Move player to the given direction
+    /// </summary>
     public void Move(Vector3 direction)
     {
         // Check Collision object in front of player's direction
@@ -23,7 +24,7 @@ public class PlayerController : MonoBehaviour
             if (other.CompareTag("Box"))
             {
                 // Collision with Box, try to move the Box
-                if (!other.GetComponent<ObjectController>().TryMove(direction))
+                if (!other.GetComponent<BoxController>().TryMove(direction))
                 {
                     // Box not moved
                     return;
@@ -31,7 +32,8 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        // No collision or box moved, player move
+        // No collision or box is pushed, player move
         transform.position += direction;
+        gameManager.ShouldUpdateGameState();
     }
 }
