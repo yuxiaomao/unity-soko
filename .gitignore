@@ -1,5 +1,10 @@
+# Visual Studio additional files
 .vsconfig
+# TextMesh Pro
+/[Aa]ssets/[Tt]ext[Mm]esh [Pp]ro/
+/[Aa]ssets/[Tt]ext[Mm]esh [Pp]ro.meta
 
+# --- Recommanded gitignore ---
 # This .gitignore file should be placed at the root of your Unity project directory
 #
 # Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore

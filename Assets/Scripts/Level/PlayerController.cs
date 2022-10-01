@@ -3,7 +3,13 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private const float moveCheckDistance = 1.0f;
-    [SerializeField] private GameManager gameManager;
+    private GameManager gameManager;
+
+    private void Start()
+    {
+        // TODO use game manager singleton?
+        gameManager = GameObject.Find(GameManager.gameObjectName).GetComponent<GameManager>();
+    }
 
     /// <summary>
     /// Move player to the given direction

@@ -1,16 +1,51 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    public const string gameObjectName = "GameManager";
+
+    private enum GameState
+    {
+        Menu,
+        Level,
+        Win,
+    }
+
+    private GameState currentState;
     private GameObject[] targets;
     private int totalTarget;
 
-    // Start is called before the first frame update
-    private void Start()
+
+    private void Awake()
     {
-        targets = GameObject.FindGameObjectsWithTag("Target");
-        totalTarget = targets.Length;
+        DontDestroyOnLoad(this.gameObject);
+        currentState = GameState.Menu;
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name.CompareTo("Menu") == 0)
+        {
+            currentState = GameState.Menu;
+        }
+        if (scene.name.StartsWith("Level"))
+        {
+            currentState = GameState.Level;
+            targets = GameObject.FindGameObjectsWithTag("Target");
+            totalTarget = targets.Length;
+        }
     }
 
     /// <summary>
@@ -18,13 +53,16 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void ShouldUpdateGameState()
     {
-        StartCoroutine(UpdateGameStateNextFrame());
+        if (currentState == GameState.Level)
+        {
+            StartCoroutine(UpdateScoreNextFrame());
+        }
     }
 
     /// <summary>
-    /// Wait for next physical frame (that game state is refreshed) before update in game manager
+    /// Wait for next physical frame (that game state is refreshed) before update target count in game manager
     /// </summary>
-    private IEnumerator UpdateGameStateNextFrame()
+    private IEnumerator UpdateScoreNextFrame()
     {
         yield return new WaitForFixedUpdate();
         // Update target count
@@ -38,6 +76,7 @@ public class GameManager : MonoBehaviour
         }
         if (withBoxTarget == totalTarget)
         {
+            currentState = GameState.Win;
             Debug.Log("Win");
         }
     }
