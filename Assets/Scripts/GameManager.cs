@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
         {
             // Destroy will only happends after 1st update
             Destroy(gameObject);
-            // Set inactive, so Awake, Start and Update will not be called for dup/child
+            // Set inactive, so Start and Update will not be called for duplication/child
             gameObject.SetActive(false);
             return;
         }
@@ -87,6 +87,16 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// /// Check if other is a child of GameManager
+    /// </summary>
+    /// <param name="other"></param>
+    public static void AssertIsChild(GameObject other)
+    {
+        Debug.Assert(other.GetComponentInParent<GameManager>() != null,
+                     "This game object must be a child of GameManger game object, " +
+                     "to manage scene transfer and deduplication");
+    }
 
     /// <summary>
     /// Tell the game manager that the game state is changed
@@ -117,6 +127,7 @@ public class GameManager : MonoBehaviour
         if (withBoxTarget == totalTarget)
         {
             currentState = GameState.Win;
+            AudioManager.PlaySEWin();
             Debug.Log("Win");
         }
     }

@@ -31,6 +31,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2645145312720828413}
+  - {fileID: 3337571607857249926}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -247,3 +248,51 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 151767dee8474894e9c051b3ab34c189, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &8950996185882602059
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3337571607857249926}
+  - component: {fileID: 304501292975513471}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 2147483647
+  m_IsActive: 1
+--- !u!4 &3337571607857249926
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8950996185882602059}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2645145312460903229}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &304501292975513471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8950996185882602059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d388d73be89a3347888256b024a2801, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BGMAudioClip: {fileID: 8300000, guid: 50e5cdf88cc1cae478a635536663f803, type: 3}
+  SEMove: {fileID: 8300000, guid: 532ea2bd1252df446960f630e5a7ddb2, type: 3}
+  SEError: {fileID: 8300000, guid: 951a0ad37a6a0fd4283570ca2d51840f, type: 3}
+  SEWin: {fileID: 8300000, guid: 9c1a8a9818d80d3459e1f1a35342d302, type: 3}

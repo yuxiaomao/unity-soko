@@ -3,8 +3,8 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 /// <summary>
-/// Manage User Input and should probably not be called by other script except Player Input component.
-/// This script is suppose to be attached to a game object with Player Input component, and be a child of GameManage game object.
+/// Manage user input with Player Input component.
+/// Should probably not be called by other script.
 /// </summary>
 public class UserInputManager : MonoBehaviour
 {
@@ -15,12 +15,9 @@ public class UserInputManager : MonoBehaviour
 
     private void Awake()
     {
-        if (this.gameObject.GetComponentInParent<GameManager>() == null)
-        {
-            Debug.LogError("This game object must be a child of GameManger game object," +
-                " to manage scene transfer and deduplication");
-        }
-        playerInput = this.gameObject.GetComponent<PlayerInput>();
+        GameManager.AssertIsChild(gameObject);
+        playerInput = gameObject.GetComponent<PlayerInput>();
+        Debug.Assert(playerInput != null, " This script is suppose to be attached to a game object with Player Input component!");
     }
 
     private void OnEnable()

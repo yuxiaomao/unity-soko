@@ -1,3 +1,6 @@
+# Copyright assets
+/[Aa]ssets/**/*.mp3
+
 # Visual Studio additional files
 .vsconfig
 # TextMesh Pro
