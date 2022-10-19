@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7253035743765084701}
   - component: {fileID: 7253035743765084698}
   - component: {fileID: 7253035743765084702}
+  - component: {fileID: -8667426394441688591}
   m_Layer: 0
   m_Name: Object
   m_TagString: Untagged
@@ -110,5 +111,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 605aca1d0008b9c4484524738cd5dc23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  iswall: 0
-  isbox: 0
+--- !u!114 &-8667426394441688591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7253035743765084699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f746814a3b92984391774885f4c4bc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  description: Base Prefab for any on sceen interaction object including Box, Target,
+    Wall

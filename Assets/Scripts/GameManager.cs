@@ -1,10 +1,17 @@
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// Singleton, manage global state
+/// </summary>
 public class GameManager : MonoBehaviour
 {
-    public const string gameObjectName = "GameManager";
+    public static GameManager Instance { get; private set; }
+    public static int MaxLevelN = 0;
 
     private enum GameState
     {
@@ -20,8 +27,18 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        DontDestroyOnLoad(this.gameObject);
-        currentState = GameState.Menu;
+        // Prevent duplicate GameManager
+        if (Instance != null)
+        {
+            // Destroy will only happends after 1st update
+            Destroy(gameObject);
+            // Set inactive, so Awake, Start and Update will not be called for dup/child
+            gameObject.SetActive(false);
+            return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     private void OnEnable()
@@ -48,14 +65,37 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public static void ExitGame()
+    {
+#if UNITY_EDITOR
+        EditorApplication.ExitPlaymode();
+#else
+        Application.Quit();
+#endif
+    }
+
+    public static void LoadSceneMainMenu()
+    {
+        SceneManager.LoadScene("Menu");
+    }
+
+    public static void LoadSceneLevelN(int n)
+    {
+        if (n >= 0 && n <= MaxLevelN)
+        {
+            SceneManager.LoadScene("Level" + n);
+        }
+    }
+
+
     /// <summary>
     /// Tell the game manager that the game state is changed
     /// </summary>
-    public void ShouldUpdateGameState()
+    public static void ShouldUpdateGameState()
     {
-        if (currentState == GameState.Level)
+        if (Instance.currentState == GameState.Level)
         {
-            StartCoroutine(UpdateScoreNextFrame());
+            Instance.StartCoroutine(Instance.UpdateScoreNextFrame());
         }
     }
 

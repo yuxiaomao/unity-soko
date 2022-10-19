@@ -3,13 +3,6 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private const float moveCheckDistance = 1.0f;
-    private GameManager gameManager;
-
-    private void Start()
-    {
-        // TODO use game manager singleton?
-        gameManager = GameObject.Find(GameManager.gameObjectName).GetComponent<GameManager>();
-    }
 
     /// <summary>
     /// Move player to the given direction
@@ -40,6 +33,6 @@ public class PlayerController : MonoBehaviour
 
         // No collision or box is pushed, player move
         transform.position += direction;
-        gameManager.ShouldUpdateGameState();
+        GameManager.ShouldUpdateGameState();
     }
 }
