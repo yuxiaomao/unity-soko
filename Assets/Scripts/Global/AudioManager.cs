@@ -23,6 +23,7 @@ public class AudioManager : MonoBehaviour
             Instance = this;
             // Add and configure audio sources
             bgmAudioSource = gameObject.AddComponent<AudioSource>();
+            bgmAudioSource.loop = true;
             seAudioSource = gameObject.AddComponent<AudioSource>();
             seAudioSource.playOnAwake = false;
         }

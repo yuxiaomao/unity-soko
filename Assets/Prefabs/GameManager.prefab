@@ -123,22 +123,6 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2645145312720828414}
         m_TargetAssemblyTypeName: UserInputManager, Assembly-CSharp
-        m_MethodName: OnMainMenuSelect
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 327da63e-1685-46f4-b471-2a389d8f1b47
-    m_ActionName: MainMenu/MenuSelect[/Keyboard/enter]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2645145312720828414}
-        m_TargetAssemblyTypeName: UserInputManager, Assembly-CSharp
         m_MethodName: OnLevelPlayerMoveUp
         m_Mode: 0
         m_Arguments:

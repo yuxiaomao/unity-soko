@@ -24,7 +24,6 @@ public class GameManager : MonoBehaviour
     private GameObject[] targets;
     private int totalTarget;
 
-
     private void Awake()
     {
         // Prevent duplicate GameManager

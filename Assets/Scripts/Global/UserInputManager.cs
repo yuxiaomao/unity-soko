@@ -47,22 +47,13 @@ public class UserInputManager : MonoBehaviour
         }
     }
 
-    // Action map call by Player Input component
-
-    public void OnMainMenuSelect(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-        {
-            GameManager.LoadSceneLevelN(0);
-            playerInput.DeactivateInput();
-        }
-    }
+    // Action map call by Player Input component has 1 parameter (InputAction.CallbackContext context)
 
     public void OnMainMenuExit(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
-            GameManager.ExitGame();
+            MainMenuUIHandler.OnClickExit();
         }
     }
 

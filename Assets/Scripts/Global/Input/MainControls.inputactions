@@ -6,15 +6,6 @@
             "id": "9749436f-fce8-45db-bb4b-7e765e3279ff",
             "actions": [
                 {
-                    "name": "Select",
-                    "type": "Button",
-                    "id": "327da63e-1685-46f4-b471-2a389d8f1b47",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Exit",
                     "type": "Button",
                     "id": "12f747d7-cbc4-43b8-9fa8-72206498e8ea",
@@ -25,17 +16,6 @@
                 }
             ],
             "bindings": [
-                {
-                    "name": "",
-                    "id": "3b64b0b6-3b53-42ed-8115-34fec435d9d6",
-                    "path": "<Keyboard>/enter",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Select",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
                 {
                     "name": "",
                     "id": "238113f6-38e7-4935-b901-e19f60d26e7a",
