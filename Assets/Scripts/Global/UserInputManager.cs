@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
@@ -54,6 +55,25 @@ public class UserInputManager : MonoBehaviour
         if (context.performed)
         {
             MainMenuUIHandler.OnClickExit();
+        }
+    }
+
+    public void OnMainMenuNavigationMouse(InputAction.CallbackContext context)
+    {
+        // Remove current select game object if mouse move detected
+        if (EventSystem.current.currentSelectedGameObject != null
+            && context.ReadValue<Vector2>().magnitude > 0.2f)
+        {
+            EventSystem.current.SetSelectedGameObject(null);
+        }
+    }
+
+    public void OnMainMenuNavigationNotMouse(InputAction.CallbackContext context)
+    {
+        // Set current select game object if not mouse input detected
+        if (context.performed)
+        {
+            MainMenuUIHandler.SelectDefaultGameObject();
         }
     }
 

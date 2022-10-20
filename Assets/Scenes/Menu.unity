@@ -206,17 +206,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1753731911590477923, guid: 1444bc01a8b04724eb979295861908b4, type: 3}
   m_PrefabInstance: {fileID: 1753731912221887682}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &786336930 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1753731911590477920, guid: 1444bc01a8b04724eb979295861908b4, type: 3}
-  m_PrefabInstance: {fileID: 1753731912221887682}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31d85a17cfdc0ee41a0935a584d8ae13, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1032634000
 GameObject:
   m_ObjectHideFlags: 0
@@ -687,7 +676,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1753731911590477920, guid: 1444bc01a8b04724eb979295861908b4, type: 3}
       propertyPath: ButtonInfos.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1753731911590477920, guid: 1444bc01a8b04724eb979295861908b4, type: 3}
       propertyPath: ButtonInfos.Array.data[0].displayText
@@ -695,6 +684,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1753731911590477920, guid: 1444bc01a8b04724eb979295861908b4, type: 3}
       propertyPath: ButtonInfos.Array.data[1].displayText
+      value: Level Select
+      objectReference: {fileID: 0}
+    - target: {fileID: 1753731911590477920, guid: 1444bc01a8b04724eb979295861908b4, type: 3}
+      propertyPath: ButtonInfos.Array.data[2].displayText
       value: Exit
       objectReference: {fileID: 0}
     - target: {fileID: 1753731911590477920, guid: 1444bc01a8b04724eb979295861908b4, type: 3}
@@ -706,11 +699,19 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1753731911590477920, guid: 1444bc01a8b04724eb979295861908b4, type: 3}
+      propertyPath: ButtonInfos.Array.data[2].OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1753731911590477920, guid: 1444bc01a8b04724eb979295861908b4, type: 3}
       propertyPath: ButtonInfos.Array.data[0].OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1753731911590477920, guid: 1444bc01a8b04724eb979295861908b4, type: 3}
       propertyPath: ButtonInfos.Array.data[1].OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1753731911590477920, guid: 1444bc01a8b04724eb979295861908b4, type: 3}
+      propertyPath: ButtonInfos.Array.data[2].OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1753731911590477920, guid: 1444bc01a8b04724eb979295861908b4, type: 3}
@@ -722,6 +723,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1032634002}
     - target: {fileID: 1753731911590477920, guid: 1444bc01a8b04724eb979295861908b4, type: 3}
+      propertyPath: ButtonInfos.Array.data[2].OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1032634002}
+    - target: {fileID: 1753731911590477920, guid: 1444bc01a8b04724eb979295861908b4, type: 3}
       propertyPath: ButtonInfos.Array.data[0].OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
@@ -730,11 +735,19 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1753731911590477920, guid: 1444bc01a8b04724eb979295861908b4, type: 3}
+      propertyPath: ButtonInfos.Array.data[2].OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1753731911590477920, guid: 1444bc01a8b04724eb979295861908b4, type: 3}
       propertyPath: ButtonInfos.Array.data[0].OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: OnClickStart
       objectReference: {fileID: 0}
     - target: {fileID: 1753731911590477920, guid: 1444bc01a8b04724eb979295861908b4, type: 3}
       propertyPath: ButtonInfos.Array.data[1].OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnClickLevelSelect
+      objectReference: {fileID: 0}
+    - target: {fileID: 1753731911590477920, guid: 1444bc01a8b04724eb979295861908b4, type: 3}
+      propertyPath: ButtonInfos.Array.data[2].OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: OnClickExit
       objectReference: {fileID: 0}
     - target: {fileID: 1753731911590477920, guid: 1444bc01a8b04724eb979295861908b4, type: 3}
@@ -746,11 +759,19 @@ PrefabInstance:
       value: MainMenuUIHandler, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 1753731911590477920, guid: 1444bc01a8b04724eb979295861908b4, type: 3}
+      propertyPath: ButtonInfos.Array.data[2].OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: MainMenuUIHandler, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1753731911590477920, guid: 1444bc01a8b04724eb979295861908b4, type: 3}
       propertyPath: ButtonInfos.Array.data[0].OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 1753731911590477920, guid: 1444bc01a8b04724eb979295861908b4, type: 3}
       propertyPath: ButtonInfos.Array.data[1].OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 1753731911590477920, guid: 1444bc01a8b04724eb979295861908b4, type: 3}
+      propertyPath: ButtonInfos.Array.data[2].OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 1753731911590477922, guid: 1444bc01a8b04724eb979295861908b4, type: 3}
