@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Manage user input with Player Input component.
@@ -9,8 +8,8 @@ using UnityEngine.SceneManagement;
 /// </summary>
 public class UserInputManager : MonoBehaviour
 {
+    private const float MouseMoveThresh = 0.2f;
     private PlayerInput playerInput;
-
     // In level only
     private PlayerController playerController;
 
@@ -21,31 +20,19 @@ public class UserInputManager : MonoBehaviour
         Debug.Assert(playerInput != null, " This script is suppose to be attached to a game object with Player Input component!");
     }
 
-    private void OnEnable()
+    public void OnSceneMenuLoaded()
     {
-        SceneManager.sceneLoaded += OnSceneLoaded;
+        playerInput.SwitchCurrentActionMap(playerInput.actions.FindActionMap(Constants.ActionMapMainMenu).name);
+        playerInput.ActivateInput();
+        Debug.Log("Menu Loaded! Current Action Map: " + playerInput.currentActionMap);
     }
 
-    private void OnDisable()
+    public void OnSceneLevelLoaded()
     {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
-
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        if (scene.name.CompareTo("Menu") == 0)
-        {
-            playerInput.SwitchCurrentActionMap(playerInput.actions.FindActionMap("MainMenu").name);
-            playerInput.ActivateInput();
-            Debug.Log("Menu Loaded! Current Action Map: " + playerInput.currentActionMap);
-        }
-        if (scene.name.StartsWith("Level"))
-        {
-            playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
-            playerInput.SwitchCurrentActionMap(playerInput.actions.FindActionMap("Level").name);
-            playerInput.ActivateInput();
-            Debug.Log("Level Loaded ! Current Action Map: " + playerInput.currentActionMap);
-        }
+        playerController = GameObject.FindGameObjectWithTag(Constants.TagPlayer).GetComponent<PlayerController>();
+        playerInput.SwitchCurrentActionMap(playerInput.actions.FindActionMap(Constants.ActionMapLevel).name);
+        playerInput.ActivateInput();
+        Debug.Log("Level Loaded ! Current Action Map: " + playerInput.currentActionMap);
     }
 
     // Action map call by Player Input component has 1 parameter (InputAction.CallbackContext context)
@@ -61,8 +48,9 @@ public class UserInputManager : MonoBehaviour
     public void OnMainMenuNavigationMouse(InputAction.CallbackContext context)
     {
         // Remove current select game object if mouse move detected
-        if (EventSystem.current.currentSelectedGameObject != null
-            && context.ReadValue<Vector2>().magnitude > 0.2f)
+        if (EventSystem.current != null &&
+            EventSystem.current.currentSelectedGameObject != null &&
+            context.ReadValue<Vector2>().magnitude > MouseMoveThresh)
         {
             EventSystem.current.SetSelectedGameObject(null);
         }

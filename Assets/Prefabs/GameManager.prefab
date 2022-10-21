@@ -13,10 +13,10 @@ GameObject:
   - component: {fileID: 2645145312460903228}
   m_Layer: 0
   m_Name: GameManager
-  m_TagString: EditorOnly
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &2645145312460903229
 Transform:
@@ -32,6 +32,7 @@ Transform:
   m_Children:
   - {fileID: 2645145312720828413}
   - {fileID: 3337571607857249926}
+  - {fileID: 2407259182375001208}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -48,7 +49,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   description: Singleton global manager, can be place into each scene to simplify
-    testing. The one in the first scene should not be [EditorOnly].
+    testing. The ones not in the first scene should be [EditorOnly].
 --- !u!114 &2645145312460903228
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -77,7 +78,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &2645145312720828413
 Transform:
@@ -264,6 +265,72 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 151767dee8474894e9c051b3ab34c189, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &4781019483680203527
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2407259182375001208}
+  - component: {fileID: 4174877872547009513}
+  - component: {fileID: 5884567455101820165}
+  m_Layer: 0
+  m_Name: LevelManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2407259182375001208
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4781019483680203527}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2645145312460903229}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4174877872547009513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4781019483680203527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f746814a3b92984391774885f4c4bc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  description: Normally only used in scene Level, put here for simplicity (group
+    Manager together)
+--- !u!114 &5884567455101820165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4781019483680203527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70f36630575b832418383c15a2c053e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  levelPrefabs:
+    playerPrefab: {fileID: 6816310729097303690, guid: f522af8471e95304db5de8e4f9861eb1, type: 3}
+    boxPrefab: {fileID: 765138259122673609, guid: 92ae88b629829904893a9b6159b6959c, type: 3}
+    targetPrefab: {fileID: 3214049577744044071, guid: b7979bb6e0eca1c479bc168549129b81, type: 3}
+    wallPrefab: {fileID: 246908082824268878, guid: 11a1dac1c9e657047a96d57710304b94, type: 3}
+  parseRoot: {fileID: 0}
+  levelDataFile: {fileID: 0}
 --- !u!1 &8950996185882602059
 GameObject:
   m_ObjectHideFlags: 0
@@ -279,7 +346,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &3337571607857249926
 Transform:
@@ -308,7 +375,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d388d73be89a3347888256b024a2801, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BGMAudioClip: {fileID: 8300000, guid: 50e5cdf88cc1cae478a635536663f803, type: 3}
-  SEMove: {fileID: 8300000, guid: 532ea2bd1252df446960f630e5a7ddb2, type: 3}
-  SEError: {fileID: 8300000, guid: 951a0ad37a6a0fd4283570ca2d51840f, type: 3}
-  SEWin: {fileID: 8300000, guid: 9c1a8a9818d80d3459e1f1a35342d302, type: 3}

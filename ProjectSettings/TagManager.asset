@@ -7,6 +7,7 @@ TagManager:
   - Wall
   - Box
   - Target
+  - LevelRoot
   layers:
   - Default
   - TransparentFX

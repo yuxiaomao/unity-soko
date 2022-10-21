@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class TargetController : ObjectController
 {
-    private const float targetCheckRadius = 0.1f;
+    private const float TargetCheckRadius = 0.1f;
 
     /// <summary>
     /// Return true if the given target is occupied by a box
@@ -10,10 +10,10 @@ public class TargetController : ObjectController
     /// <returns></returns>
     public bool IsTargetWithBox()
     {
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, targetCheckRadius);
-        foreach (var hitCollider in hitColliders)
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, TargetCheckRadius);
+        for (int i = 0; i < hitColliders.Length; i++)
         {
-            if (hitCollider.gameObject.CompareTag("Box"))
+            if (hitColliders[i].gameObject.CompareTag(Constants.TagBox))
             {
                 return true;
             }

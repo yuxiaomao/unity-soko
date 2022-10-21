@@ -6,17 +6,16 @@ using UnityEngine.UI;
 /// </summary>
 public class MenuButtonsGenerator : MonoBehaviour
 {
-
-    [SerializeField] private Button ButtonPrefab;
-    [SerializeField] private ButtonInfo[] ButtonInfos;
-    public Button[] GeneratedButtons { get; private set; }
-
     [System.Serializable]
     private class ButtonInfo
     {
         public string displayText;
         public Button.ButtonClickedEvent OnClick;
     }
+
+    [SerializeField] private Button ButtonPrefab;
+    [SerializeField] private ButtonInfo[] ButtonInfos;
+    public Button[] GeneratedButtons { get; private set; }
 
     public void Generate()
     {

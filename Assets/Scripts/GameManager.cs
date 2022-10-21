@@ -10,9 +10,6 @@ using UnityEngine.SceneManagement;
 /// </summary>
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance { get; private set; }
-    public static int MaxLevelN = 0;
-
     private enum GameState
     {
         Menu,
@@ -20,6 +17,10 @@ public class GameManager : MonoBehaviour
         Win,
     }
 
+    public static GameManager Instance { get; private set; }
+    private static UserInputManager userInputManager;
+    private static LevelManager levelManager;
+    private static int currentLevel;
     private GameState currentState;
     private GameObject[] targets;
     private int totalTarget;
@@ -43,6 +44,8 @@ public class GameManager : MonoBehaviour
     private void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
+        userInputManager = GetComponentInChildren<UserInputManager>();
+        levelManager = GetComponentInChildren<LevelManager>();
     }
 
     private void OnDisable()
@@ -52,15 +55,19 @@ public class GameManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name.CompareTo("Menu") == 0)
+        // Detect loaded scene and control other manager action order
+        if (scene.name.CompareTo(Constants.SceneMenu) == 0)
         {
             currentState = GameState.Menu;
+            userInputManager.OnSceneMenuLoaded();
         }
-        if (scene.name.StartsWith("Level"))
+        if (scene.name.CompareTo(Constants.SceneLevel) == 0)
         {
             currentState = GameState.Level;
-            targets = GameObject.FindGameObjectsWithTag("Target");
+            levelManager.LoadLevel(LevelManager.LevelNames[currentLevel]);
+            targets = GameObject.FindGameObjectsWithTag(Constants.TagTarget);
             totalTarget = targets.Length;
+            userInputManager.OnSceneLevelLoaded();
         }
     }
 
@@ -75,14 +82,23 @@ public class GameManager : MonoBehaviour
 
     public static void LoadSceneMainMenu()
     {
-        SceneManager.LoadScene("Menu");
+        SceneManager.LoadScene(Constants.SceneMenu);
     }
 
     public static void LoadSceneLevelN(int n)
     {
-        if (n >= 0 && n <= MaxLevelN)
+        if (n >= 0 && n <= LevelManager.LevelNames.Length)
         {
-            SceneManager.LoadScene("Level" + n);
+            currentLevel = n;
+            if (SceneManager.GetActiveScene().name.CompareTo(Constants.SceneLevel) != 0)
+            {
+                SceneManager.LoadScene(Constants.SceneLevel);
+            }
+            else
+            {
+                levelManager.CleanGeneratedLevels();
+                levelManager.LoadLevel(LevelManager.LevelNames[n]);
+            }
         }
     }
 
@@ -116,9 +132,9 @@ public class GameManager : MonoBehaviour
         yield return new WaitForFixedUpdate();
         // Update target count
         int withBoxTarget = 0;
-        foreach (GameObject target in targets)
+        for (int i = 0; i < targets.Length; i++)
         {
-            if (target.GetComponent<TargetController>().IsTargetWithBox())
+            if (targets[i].GetComponent<TargetController>().IsTargetWithBox())
             {
                 withBoxTarget += 1;
             }

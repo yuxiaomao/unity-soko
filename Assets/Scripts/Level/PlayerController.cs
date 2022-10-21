@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    private const float moveCheckDistance = 1.0f;
+    private const float MoveCheckDistance = 1.0f;
 
     /// <summary>
     /// Move player to the given direction
@@ -10,18 +10,17 @@ public class PlayerController : MonoBehaviour
     public void Move(Vector3 direction)
     {
         // Check Collision object in front of player's direction
-        RaycastHit hitInfo;
-        if (Physics.Raycast(transform.position, direction, out hitInfo, moveCheckDistance))
+        if (Physics.Raycast(transform.position, direction, out RaycastHit hitInfo, MoveCheckDistance))
         {
             // Has collision
             GameObject other = hitInfo.collider.gameObject;
-            if (other.CompareTag("Wall"))
+            if (other.CompareTag(Constants.TagWall))
             {
                 // Collision with wall, can not move
                 AudioManager.PlaySEError();
                 return;
             }
-            if (other.CompareTag("Box"))
+            if (other.CompareTag(Constants.TagBox))
             {
                 // Collision with Box, try to move the Box
                 if (!other.GetComponent<BoxController>().TryMove(direction))

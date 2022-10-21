@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 
 /// <summary>
@@ -8,11 +9,10 @@ public class AudioManager : MonoBehaviour
     private static AudioManager Instance { get; set; }
     private AudioSource bgmAudioSource;
     private AudioSource seAudioSource;
-
-    [SerializeField] private AudioClip BGMAudioClip;
-    [SerializeField] private AudioClip SEMove;
-    [SerializeField] private AudioClip SEError;
-    [SerializeField] private AudioClip SEWin;
+    private AudioClip BGMAudioClip;
+    private AudioClip SEMove;
+    private AudioClip SEError;
+    private AudioClip SEWin;
 
     private void Awake()
     {
@@ -27,14 +27,22 @@ public class AudioManager : MonoBehaviour
             seAudioSource = gameObject.AddComponent<AudioSource>();
             seAudioSource.playOnAwake = false;
         }
-        // Deduplication managed by GameManager, doesn't need destroy
+        // Deduplication managed by GameManager
     }
 
     private void Start()
     {
+        BGMAudioClip = LoadAudioClipAsset("Assets/Audio/BGM/maou_bgm_8bit01.mp3");
+        SEMove = LoadAudioClipAsset("Assets/Audio/SE/move.mp3");
+        SEError = LoadAudioClipAsset("Assets/Audio/SE/error.mp3");
+        SEWin = LoadAudioClipAsset("Assets/Audio/SE/win.mp3");
         PlayBGM();
     }
 
+    private static AudioClip LoadAudioClipAsset(string clippath)
+    {
+        return (AudioClip)AssetDatabase.LoadAssetAtPath(clippath, typeof(AudioClip));
+    }
 
     private static void PlayBGM()
     {
