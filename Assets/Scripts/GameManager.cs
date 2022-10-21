@@ -14,16 +14,17 @@ public class GameManager : MonoBehaviour
     {
         Menu,
         Level,
-        Win,
+        PauseMenu,
+        Win // TODO move win in another place, as we can open pause menu when win
     }
 
     public static GameManager Instance { get; private set; }
     private static UserInputManager userInputManager;
     private static LevelManager levelManager;
     private static int currentLevel;
-    private GameState currentState;
-    private GameObject[] targets;
-    private int totalTarget;
+    private static GameState currentState;
+    private static GameObject[] targets;
+    private static int totalTarget;
 
     private void Awake()
     {
@@ -59,7 +60,7 @@ public class GameManager : MonoBehaviour
         if (scene.name.CompareTo(Constants.SceneMenu) == 0)
         {
             currentState = GameState.Menu;
-            userInputManager.OnSceneMenuLoaded();
+            userInputManager.ActivateUserInput(Constants.ActionMapMainMenu);
         }
         if (scene.name.CompareTo(Constants.SceneLevel) == 0)
         {
@@ -67,7 +68,7 @@ public class GameManager : MonoBehaviour
             levelManager.LoadLevel(LevelManager.LevelNames[currentLevel]);
             targets = GameObject.FindGameObjectsWithTag(Constants.TagTarget);
             totalTarget = targets.Length;
-            userInputManager.OnSceneLevelLoaded();
+            userInputManager.ActivateUserInput(Constants.ActionMapLevel);
         }
     }
 
@@ -82,6 +83,7 @@ public class GameManager : MonoBehaviour
 
     public static void LoadSceneMainMenu()
     {
+        userInputManager.DeactivateUserInput();
         SceneManager.LoadScene(Constants.SceneMenu);
     }
 
@@ -92,13 +94,41 @@ public class GameManager : MonoBehaviour
             currentLevel = n;
             if (SceneManager.GetActiveScene().name.CompareTo(Constants.SceneLevel) != 0)
             {
+                currentState = GameState.Level;
+                userInputManager.DeactivateUserInput();
                 SceneManager.LoadScene(Constants.SceneLevel);
             }
             else
             {
+                userInputManager.DeactivateUserInput();
                 levelManager.CleanGeneratedLevels();
                 levelManager.LoadLevel(LevelManager.LevelNames[n]);
+                userInputManager.ActivateUserInput();
             }
+        }
+    }
+
+    public static void OpenPauseMenu()
+    {
+        if (currentState == GameState.Level)
+        {
+            currentState = GameState.PauseMenu;
+            userInputManager.DeactivateUserInput();
+            LevelOverlayUIHandler.Instance.Hide();
+            PauseMenuUIHandler.Instance.Show();
+            userInputManager.ActivateUserInput(Constants.ActionMapPauseMenu);
+        }
+    }
+
+    public static void ClosePauseMenu()
+    {
+        if (currentState == GameState.PauseMenu)
+        {
+            currentState = GameState.Level;
+            userInputManager.DeactivateUserInput();
+            PauseMenuUIHandler.Instance.Hide();
+            LevelOverlayUIHandler.Instance.Show();
+            userInputManager.ActivateUserInput(Constants.ActionMapLevel);
         }
     }
 
@@ -118,16 +148,16 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public static void ShouldUpdateGameState()
     {
-        if (Instance.currentState == GameState.Level)
+        if (currentState == GameState.Level)
         {
-            Instance.StartCoroutine(Instance.UpdateScoreNextFrame());
+            Instance.StartCoroutine(UpdateScoreNextFrame());
         }
     }
 
     /// <summary>
     /// Wait for next physical frame (that game state is refreshed) before update target count in game manager
     /// </summary>
-    private IEnumerator UpdateScoreNextFrame()
+    private static IEnumerator UpdateScoreNextFrame()
     {
         yield return new WaitForFixedUpdate();
         // Update target count

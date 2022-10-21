@@ -1,5 +1,5 @@
-#if UNITY_EDITOR
 using System;
+#if UNITY_EDITOR
 using System.IO;
 using UnityEditor;
 #endif
@@ -20,7 +20,7 @@ public class LevelManager : MonoBehaviour
         public GameObject wallPrefab;
     }
 
-    [System.Serializable]
+    [Serializable]
     private class LevelData
     {
         public Vector2Int[] players;
@@ -71,7 +71,11 @@ public class LevelManager : MonoBehaviour
         node.transform.parent = parent.transform;
         for (int i = 0; i < positions.Length; i++)
         {
+#if UNITY_EDITOR
             GameObject obj = (GameObject)PrefabUtility.InstantiatePrefab(prefab, node.transform);
+#else
+            GameObject obj = (GameObject)Instantiate(prefab, node.transform);
+#endif
             obj.transform.localPosition = Util.Vector2InttoVector3XZ(positions[i], prefab.transform.position.y);
         }
     }

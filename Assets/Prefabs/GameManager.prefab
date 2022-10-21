@@ -248,6 +248,54 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 505d90bf-f374-46d7-a31e-b73ebcab8996
     m_ActionName: MainMenu/NavigationNotMouse[/Keyboard/anyKey]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2645145312720828414}
+        m_TargetAssemblyTypeName: UserInputManager, Assembly-CSharp
+        m_MethodName: OnPauseMenuExit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 13e23997-ba6c-4856-9552-c3b21936cd4c
+    m_ActionName: PauseMenu/Exit[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2645145312720828414}
+        m_TargetAssemblyTypeName: UserInputManager, Assembly-CSharp
+        m_MethodName: OnPauseMenuNavigationMouse
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 617a6de7-6e50-4def-9394-3abd3be38777
+    m_ActionName: PauseMenu/NavigationMouse[/Mouse/delta]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2645145312720828414}
+        m_TargetAssemblyTypeName: UserInputManager, Assembly-CSharp
+        m_MethodName: OnPauseMenuNavigationNotMouse
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 8c5f494b-5791-44e6-9335-c165ab03e09a
+    m_ActionName: PauseMenu/NavigationNotMouse[/Keyboard/anyKey]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: MainMenu

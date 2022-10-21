@@ -1,14 +1,26 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class MainMenuUIHandler : UIHandler
+public class PauseMenuUIHandler : UIHandler
 {
+    public static PauseMenuUIHandler Instance { get; private set; }
     private static MenuButtonsGenerator menuButtonsGenerator;
 
-    private void Start()
+    private void Awake()
     {
+        Instance = this;
         menuButtonsGenerator = GetComponentInChildren<MenuButtonsGenerator>();
-        menuButtonsGenerator.Generate();
+        gameObject.SetActive(false);
+    }
+
+    public override void Show()
+    {
+        base.Show();
+        // Delayed button generation
+        if (menuButtonsGenerator.GeneratedButtons == null)
+        {
+            menuButtonsGenerator.Generate();
+        }
     }
 
     /// <summary>
@@ -26,19 +38,19 @@ public class MainMenuUIHandler : UIHandler
 
     // UI element call by UnityEvent has 0 parameter
 
-    public static void OnClickStart()
+    public static void OnClickResume()
     {
-        GameManager.LoadSceneLevelN(0);
+        GameManager.ClosePauseMenu();
     }
 
-    public static void OnClickLevelSelect()
+    public static void OnClickReset()
     {
-        // TODO
-        Debug.Log("TODO: Open Level Select UI");
+        Debug.Log("Reset");
     }
 
-    public static void OnClickExit()
+    public static void OnClickMainMenu()
     {
-        GameManager.ExitGame();
+        GameManager.LoadSceneMainMenu();
     }
+
 }

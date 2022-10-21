@@ -4,35 +4,55 @@ using UnityEngine.InputSystem;
 
 /// <summary>
 /// Manage user input with Player Input component.
-/// Should probably not be called by other script.
+/// Should probably not be called by other script, except GameManager for action map control on scene/UI change.
 /// </summary>
 public class UserInputManager : MonoBehaviour
 {
     private const float MouseMoveThresh = 0.2f;
     private PlayerInput playerInput;
     // In level only
-    private PlayerController playerController;
+    private PlayerController m_Player;
+    private PlayerController Player
+    {
+        get
+        {
+            if (m_Player == null)
+            {
+                m_Player = GameObject.FindGameObjectWithTag(Constants.TagPlayer).GetComponent<PlayerController>();
+            }
+            return m_Player;
+        }
+    }
 
     private void Awake()
     {
         GameManager.AssertIsChild(gameObject);
         playerInput = gameObject.GetComponent<PlayerInput>();
-        Debug.Assert(playerInput != null, " This script is suppose to be attached to a game object with Player Input component!");
     }
 
-    public void OnSceneMenuLoaded()
+    /// <summary>
+    /// User input action map control by GameManager
+    /// </summary>
+    public void DeactivateUserInput()
     {
-        playerInput.SwitchCurrentActionMap(playerInput.actions.FindActionMap(Constants.ActionMapMainMenu).name);
-        playerInput.ActivateInput();
-        Debug.Log("Menu Loaded! Current Action Map: " + playerInput.currentActionMap);
+        playerInput.DeactivateInput();
     }
 
-    public void OnSceneLevelLoaded()
+    /// <summary>
+    /// User input action map control by GameManager
+    /// </summary>
+    public void ActivateUserInput()
     {
-        playerController = GameObject.FindGameObjectWithTag(Constants.TagPlayer).GetComponent<PlayerController>();
-        playerInput.SwitchCurrentActionMap(playerInput.actions.FindActionMap(Constants.ActionMapLevel).name);
         playerInput.ActivateInput();
-        Debug.Log("Level Loaded ! Current Action Map: " + playerInput.currentActionMap);
+    }
+
+    /// <summary>
+    /// User input action map control by GameManager
+    /// </summary>
+    public void ActivateUserInput(string actionMapName)
+    {
+        playerInput.SwitchCurrentActionMap(playerInput.actions.FindActionMap(actionMapName).name);
+        playerInput.ActivateInput();
     }
 
     // Action map call by Player Input component has 1 parameter (InputAction.CallbackContext context)
@@ -47,13 +67,7 @@ public class UserInputManager : MonoBehaviour
 
     public void OnMainMenuNavigationMouse(InputAction.CallbackContext context)
     {
-        // Remove current select game object if mouse move detected
-        if (EventSystem.current != null &&
-            EventSystem.current.currentSelectedGameObject != null &&
-            context.ReadValue<Vector2>().magnitude > MouseMoveThresh)
-        {
-            EventSystem.current.SetSelectedGameObject(null);
-        }
+        OnMenuNavigationMouse(context);
     }
 
     public void OnMainMenuNavigationNotMouse(InputAction.CallbackContext context)
@@ -62,6 +76,7 @@ public class UserInputManager : MonoBehaviour
         if (context.performed)
         {
             MainMenuUIHandler.SelectDefaultGameObject();
+            Cursor.visible = false;
         }
     }
 
@@ -69,7 +84,7 @@ public class UserInputManager : MonoBehaviour
     {
         if (context.performed)
         {
-            playerController.Move(Vector3.forward);
+            Player.Move(Vector3.forward);
         }
     }
 
@@ -77,7 +92,7 @@ public class UserInputManager : MonoBehaviour
     {
         if (context.performed)
         {
-            playerController.Move(Vector3.back);
+            Player.Move(Vector3.back);
         }
     }
 
@@ -85,7 +100,7 @@ public class UserInputManager : MonoBehaviour
     {
         if (context.performed)
         {
-            playerController.Move(Vector3.left);
+            Player.Move(Vector3.left);
         }
     }
 
@@ -93,7 +108,7 @@ public class UserInputManager : MonoBehaviour
     {
         if (context.performed)
         {
-            playerController.Move(Vector3.right);
+            Player.Move(Vector3.right);
         }
     }
 
@@ -101,8 +116,43 @@ public class UserInputManager : MonoBehaviour
     {
         if (context.performed)
         {
-            GameManager.LoadSceneMainMenu();
-            playerInput.DeactivateInput();
+            GameManager.OpenPauseMenu();
+            PauseMenuUIHandler.SelectDefaultGameObject(); // as we open menu with keyboard
+        }
+    }
+
+    public void OnPauseMenuExit(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            GameManager.ClosePauseMenu();
+        }
+    }
+
+    public void OnPauseMenuNavigationMouse(InputAction.CallbackContext context)
+    {
+        OnMenuNavigationMouse(context);
+    }
+
+    public void OnPauseMenuNavigationNotMouse(InputAction.CallbackContext context)
+    {
+        // Set current select game object if not mouse input detected
+        if (context.performed)
+        {
+            PauseMenuUIHandler.SelectDefaultGameObject();
+            Cursor.visible = false;
+        }
+    }
+
+    private void OnMenuNavigationMouse(InputAction.CallbackContext context)
+    {
+        // Remove current select game object if mouse move detected
+        if (EventSystem.current != null &&
+            EventSystem.current.currentSelectedGameObject != null &&
+            context.ReadValue<Vector2>().magnitude > MouseMoveThresh)
+        {
+            EventSystem.current.SetSelectedGameObject(null);
+            Cursor.visible = true;
         }
     }
 }

@@ -1,3 +1,6 @@
+/// <summary>
+/// Projet level constans, including tags, scene names, action map names
+/// </summary>
 public static class Constants
 {
     // Unity default tags
@@ -13,4 +16,5 @@ public static class Constants
     // Action map names
     public static string ActionMapMainMenu = "MainMenu";
     public static string ActionMapLevel = "Level";
+    public static string ActionMapPauseMenu = "PauseMenu";
 }
