@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
 #if UNITY_EDITOR
 using System.IO;
 using UnityEditor;
 #endif
 using UnityEngine;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 /// <summary>
 /// Manage load level from level data (both ingame and editor),
@@ -29,28 +31,33 @@ public class LevelManager : MonoBehaviour
         public Vector2Int[] walls;
     }
 
-    [SerializeField] private LevelPrefabs levelPrefabs;
-    public static readonly string[] LevelNames = { "Level0", "Level" };
-
-    public void LoadLevel(TextAsset jsonTextAsset)
+    public enum Level
     {
-        if (jsonTextAsset != null)
+        [StringValue("Level0")]
+        Level0,
+    }
+
+    [SerializeField] private LevelPrefabs levelPrefabs;
+    private readonly Dictionary<Level, AsyncOperationHandle<TextAsset>> levelHandles = new();
+
+    /// <summary>
+    /// Blocking call to load immediately the level.
+    /// Should only be called by GameManager.
+    /// </summary>
+    /// <param name="level">LevelManager.Level</param>
+    public void LoadLevelImmediate(Level level)
+    {
+        LoadLevelDataFileAsync(level);
+        TextAsset ta = UtilAddressable.WaitForCompletion(levelHandles[level]);
+        if (ta != default)
         {
-            LevelData data = JsonUtility.FromJson<LevelData>(jsonTextAsset.ToString());
-            GameObject levelNode = new("_gen" + jsonTextAsset.name);
-            levelNode.tag = Constants.TagLevelRoot;
-            InstantiateObject(levelPrefabs.playerPrefab, data.players, Constants.TagPlayer, levelNode);
-            InstantiateObject(levelPrefabs.boxPrefab, data.boxes, Constants.TagBox, levelNode);
-            InstantiateObject(levelPrefabs.targetPrefab, data.targets, Constants.TagTarget, levelNode);
-            InstantiateObject(levelPrefabs.wallPrefab, data.walls, Constants.TagWall, levelNode);
+            InstantiateLevel(ta, level);
         }
     }
 
-    public void LoadLevel(string levelname)
-    {
-        LoadLevel((TextAsset)AssetDatabase.LoadAssetAtPath("Assets/Levels/" + levelname + ".json", typeof(TextAsset)));
-    }
-
+    /// <summary>
+    /// Should only be called by GameManager in game, or call by Editor
+    /// </summary>
     public void CleanGeneratedLevels()
     {
         GameObject[] gos = GameObject.FindGameObjectsWithTag(Constants.TagLevelRoot);
@@ -62,6 +69,34 @@ public class LevelManager : MonoBehaviour
             Destroy(gos[i]);
             gos[i].SetActive(false);
 #endif
+        }
+    }
+
+    private void LoadLevelDataFileAsync(Level level)
+    {
+        if (!levelHandles.ContainsKey(level))
+        {
+            string levelname = Util.GetEnumStringValue(level);
+            levelHandles[level] = UtilAddressable.LoadAssetAsync<TextAsset>("Assets/Levels/" + levelname + ".json");
+        }
+    }
+
+    /// <summary>
+    /// Instantiate a Level with corresponding asset
+    /// </summary>
+    /// <param name="textAsset">JSON file containing LevelData</param>
+    /// <param name="level">Level name will be used on generated node</param>
+    private void InstantiateLevel(TextAsset textAsset, Level level = Level.Level0)
+    {
+        if (textAsset != null)
+        {
+            LevelData data = JsonUtility.FromJson<LevelData>(textAsset.ToString());
+            GameObject levelNode = new("_gen" + Util.GetEnumStringValue(level));
+            levelNode.tag = Constants.TagLevelRoot;
+            InstantiateObject(levelPrefabs.playerPrefab, data.players, Constants.TagPlayer, levelNode);
+            InstantiateObject(levelPrefabs.boxPrefab, data.boxes, Constants.TagBox, levelNode);
+            InstantiateObject(levelPrefabs.targetPrefab, data.targets, Constants.TagTarget, levelNode);
+            InstantiateObject(levelPrefabs.wallPrefab, data.walls, Constants.TagWall, levelNode);
         }
     }
 
@@ -80,6 +115,7 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+    #region REGION_UNITY_EDITOR
 #if UNITY_EDITOR
     [SerializeField] private GameObject parseRoot;
     [SerializeField] private TextAsset levelDataFile;
@@ -105,12 +141,9 @@ public class LevelManager : MonoBehaviour
 
         string path = GetLevelFilePathAndBackup(parseRoot.name);
         File.WriteAllText(path, JsonUtility.ToJson(levelData));
-        Debug.Log("Write data to" + path + "\n" +
-            "Parsing:" + parseRoot +
-            "; player count=" + players.Length +
-            "; boxes count=" + boxes.Length +
-            "; targets count=" + targets.Length +
-            "; objects count=" + walls.Length);
+        Debug.Log($"Write data to {path} \n" +
+            $"Parsing: {parseRoot}; player count={players.Length}; boxes count={boxes.Length}; " +
+            $"targets count={targets.Length}; objects count={walls.Length}");
     }
 
     /// <summary>
@@ -118,7 +151,7 @@ public class LevelManager : MonoBehaviour
     /// </summary>
     public void LoadLevelInEditor()
     {
-        LoadLevel(levelDataFile);
+        InstantiateLevel(levelDataFile);
     }
 
     /// <summary>
@@ -148,4 +181,6 @@ public class LevelManager : MonoBehaviour
         return data;
     }
 #endif
+    #endregion
+
 }

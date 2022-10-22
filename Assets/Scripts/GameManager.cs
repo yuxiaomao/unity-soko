@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
     private static UserInputManager userInputManager;
     private static LevelManager levelManager;
-    private static int currentLevel;
+    private static LevelManager.Level currentLevel;
     private static GameState currentState;
     private static GameObject[] targets;
     private static int totalTarget;
@@ -65,10 +65,7 @@ public class GameManager : MonoBehaviour
         if (scene.name.CompareTo(Constants.SceneLevel) == 0)
         {
             currentState = GameState.Level;
-            levelManager.LoadLevel(LevelManager.LevelNames[currentLevel]);
-            targets = GameObject.FindGameObjectsWithTag(Constants.TagTarget);
-            totalTarget = targets.Length;
-            userInputManager.ActivateUserInput(Constants.ActionMapLevel);
+            LoadLevelInternal(currentLevel);
         }
     }
 
@@ -81,31 +78,35 @@ public class GameManager : MonoBehaviour
 #endif
     }
 
-    public static void LoadSceneMainMenu()
+    public static void OpenMainMenu()
     {
         userInputManager.DeactivateUserInput();
         SceneManager.LoadScene(Constants.SceneMenu);
     }
 
-    public static void LoadSceneLevelN(int n)
+    public static void OpenLevel(LevelManager.Level level)
     {
-        if (n >= 0 && n <= LevelManager.LevelNames.Length)
+        if (currentState != GameState.Level)
         {
-            currentLevel = n;
-            if (SceneManager.GetActiveScene().name.CompareTo(Constants.SceneLevel) != 0)
-            {
-                currentState = GameState.Level;
-                userInputManager.DeactivateUserInput();
-                SceneManager.LoadScene(Constants.SceneLevel);
-            }
-            else
-            {
-                userInputManager.DeactivateUserInput();
-                levelManager.CleanGeneratedLevels();
-                levelManager.LoadLevel(LevelManager.LevelNames[n]);
-                userInputManager.ActivateUserInput();
-            }
+            // Load Level scene if not in Level scene
+            currentLevel = level;
+            userInputManager.DeactivateUserInput();
+            SceneManager.LoadScene(Constants.SceneLevel);
+        } else
+        {
+            currentLevel = level;
+            LoadLevelInternal(level);
         }
+    }
+
+    private static void LoadLevelInternal(LevelManager.Level level)
+    {
+        userInputManager.DeactivateUserInput();
+        levelManager.CleanGeneratedLevels();
+        levelManager.LoadLevelImmediate(level);
+        targets = GameObject.FindGameObjectsWithTag(Constants.TagTarget);
+        totalTarget = targets.Length;
+        userInputManager.ActivateUserInput(Constants.ActionMapLevel);
     }
 
     public static void OpenPauseMenu()
@@ -172,7 +173,7 @@ public class GameManager : MonoBehaviour
         if (withBoxTarget == totalTarget)
         {
             currentState = GameState.Win;
-            AudioManager.PlaySEWin();
+            AudioManager.PlaySE(AudioManager.SE.Win);
             Debug.Log("Win");
         }
     }

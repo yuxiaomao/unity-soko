@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
             if (other.CompareTag(Constants.TagWall))
             {
                 // Collision with wall, can not move
-                AudioManager.PlaySEError();
+                AudioManager.PlaySE(AudioManager.SE.Error);
                 return;
             }
             if (other.CompareTag(Constants.TagBox))
@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour
                 if (!other.GetComponent<BoxController>().TryMove(direction))
                 {
                     // Box not moved
-                    AudioManager.PlaySEError();
+                    AudioManager.PlaySE(AudioManager.SE.Error);
                     return;
                 }
             }
@@ -35,6 +35,6 @@ public class PlayerController : MonoBehaviour
         // No collision or box is pushed, player move
         transform.position += direction;
         GameManager.ShouldUpdateGameState();
-        AudioManager.PlaySEMove();
+        AudioManager.PlaySE(AudioManager.SE.Move);
     }
 }

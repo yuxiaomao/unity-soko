@@ -50,7 +50,7 @@ public class PauseMenuUIHandler : UIHandler
 
     public static void OnClickMainMenu()
     {
-        GameManager.LoadSceneMainMenu();
+        GameManager.OpenMainMenu();
     }
 
 }

@@ -28,7 +28,7 @@ public class MainMenuUIHandler : UIHandler
 
     public static void OnClickStart()
     {
-        GameManager.LoadSceneLevelN(0);
+        GameManager.OpenLevel(0);
     }
 
     public static void OnClickLevelSelect()

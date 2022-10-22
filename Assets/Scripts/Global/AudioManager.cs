@@ -1,5 +1,6 @@
-using UnityEditor;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 /// <summary>
 /// Manage audio output.
@@ -9,10 +10,23 @@ public class AudioManager : MonoBehaviour
     private static AudioManager Instance { get; set; }
     private AudioSource bgmAudioSource;
     private AudioSource seAudioSource;
-    private AudioClip BGMAudioClip;
-    private AudioClip SEMove;
-    private AudioClip SEError;
-    private AudioClip SEWin;
+
+    public enum BGM
+    {
+        [StringValue("Assets/Audio/BGM/maou_bgm_8bit01.mp3")]
+        Main,
+    }
+    public enum SE
+    {
+        [StringValue("Assets/Audio/SE/move.mp3")]
+        Move,
+        [StringValue("Assets/Audio/SE/error.mp3")]
+        Error,
+        [StringValue("Assets/Audio/SE/win.mp3")]
+        Win,
+    }
+    private readonly Dictionary<BGM, AsyncOperationHandle<AudioClip>> bgmHandles = new();
+    private readonly Dictionary<SE, AsyncOperationHandle<AudioClip>> seHandles = new();
 
     private void Awake()
     {
@@ -32,36 +46,54 @@ public class AudioManager : MonoBehaviour
 
     private void Start()
     {
-        BGMAudioClip = LoadAudioClipAsset("Assets/Audio/BGM/maou_bgm_8bit01.mp3");
-        SEMove = LoadAudioClipAsset("Assets/Audio/SE/move.mp3");
-        SEError = LoadAudioClipAsset("Assets/Audio/SE/error.mp3");
-        SEWin = LoadAudioClipAsset("Assets/Audio/SE/win.mp3");
-        PlayBGM();
+        PlayBGM(BGM.Main);
     }
 
-    private static AudioClip LoadAudioClipAsset(string clippath)
+    private static void LoadAudioClipAssetAsync(BGM bgm)
     {
-        return (AudioClip)AssetDatabase.LoadAssetAtPath(clippath, typeof(AudioClip));
+        if (!Instance.bgmHandles.ContainsKey(bgm))
+        {
+            string clippath = Util.GetEnumStringValue(bgm);
+            Instance.bgmHandles[bgm] = UtilAddressable.LoadAssetAsync<AudioClip>(clippath);
+        }
     }
 
-    private static void PlayBGM()
+    private static void LoadAudioClipAssetAsync(SE se)
     {
-        Instance.bgmAudioSource.clip = Instance.BGMAudioClip;
-        Instance.bgmAudioSource.Play();
+        if (!Instance.seHandles.ContainsKey(se))
+        {
+            string clippath = Util.GetEnumStringValue(se);
+            Instance.seHandles[se] = UtilAddressable.LoadAssetAsync<AudioClip>(clippath);
+        }
     }
 
-    public static void PlaySEMove()
+    /// <summary>
+    /// Play a given BGM, load it if not loaded.
+    /// </summary>
+    /// <param name="bgm">AudioManager.BGM</param>
+    private static void PlayBGM(BGM bgm)
     {
-        Instance.seAudioSource.PlayOneShot(Instance.SEMove, 0.5f);
+        LoadAudioClipAssetAsync(bgm);
+        AudioClip clip = UtilAddressable.WaitForCompletion(Instance.bgmHandles[bgm]);
+        if (clip != default)
+        {
+            Instance.bgmAudioSource.clip = clip;
+            Instance.bgmAudioSource.Play();
+        }
     }
 
-    public static void PlaySEError()
+    /// <summary>
+    /// Play a given SE, load it if not loaded.
+    /// </summary>
+    /// <param name="se">AudioManager.SE</param>
+    /// <param name="volumeScale"></param>
+    public static void PlaySE(SE se, float volumeScale = 1.0f)
     {
-        Instance.seAudioSource.PlayOneShot(Instance.SEError);
-    }
-
-    public static void PlaySEWin()
-    {
-        Instance.seAudioSource.PlayOneShot(Instance.SEWin);
+        LoadAudioClipAssetAsync(se);
+        AudioClip clip = UtilAddressable.WaitForCompletion(Instance.seHandles[se]);
+        if (clip != default)
+        {
+            Instance.seAudioSource.PlayOneShot(clip, volumeScale);
+        }
     }
 }
