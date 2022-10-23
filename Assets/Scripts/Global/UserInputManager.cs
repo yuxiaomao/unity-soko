@@ -12,18 +12,7 @@ public class UserInputManager : MonoBehaviour
     private PlayerInput playerInput;
     private bool lastInputIsCursor = true;
     // In level only
-    private PlayerController m_Player;
-    private PlayerController Player
-    {
-        get
-        {
-            if (m_Player == null)
-            {
-                m_Player = GameObject.FindGameObjectWithTag(Constants.TagPlayer).GetComponent<PlayerController>();
-            }
-            return m_Player;
-        }
-    }
+    private PlayerController[] players;
 
     private void Awake()
     {
@@ -56,8 +45,19 @@ public class UserInputManager : MonoBehaviour
         playerInput.ActivateInput();
     }
 
+    public void UpdatePlayerReferences()
+    {
+        GameObject[] gos = GameObject.FindGameObjectsWithTag(Constants.TagPlayer);
+        players = new PlayerController[gos.Length];
+        for (int i = 0; i < gos.Length; i++)
+        {
+            players[i] = gos[i].GetComponent<PlayerController>();
+        }
+    }
+
     // Action map call by Player Input component has 1 parameter (InputAction.CallbackContext context)
 
+    #region OnMainMenu
     public void OnMainMenuExit(InputAction.CallbackContext context)
     {
         if (context.performed)
@@ -84,12 +84,14 @@ public class UserInputManager : MonoBehaviour
             Cursor.visible = false;
         }
     }
+    #endregion
 
+    #region OnLevel
     public void OnLevelPlayerMoveUp(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
-            Player.Move(Vector3.forward);
+            LevelMoveAllPlayers(Vector3.forward);
         }
     }
 
@@ -97,7 +99,7 @@ public class UserInputManager : MonoBehaviour
     {
         if (context.performed)
         {
-            Player.Move(Vector3.back);
+            LevelMoveAllPlayers(Vector3.back);
         }
     }
 
@@ -105,7 +107,7 @@ public class UserInputManager : MonoBehaviour
     {
         if (context.performed)
         {
-            Player.Move(Vector3.left);
+            LevelMoveAllPlayers(Vector3.left);
         }
     }
 
@@ -113,7 +115,7 @@ public class UserInputManager : MonoBehaviour
     {
         if (context.performed)
         {
-            Player.Move(Vector3.right);
+            LevelMoveAllPlayers(Vector3.right);
         }
     }
 
@@ -126,7 +128,9 @@ public class UserInputManager : MonoBehaviour
             PauseMenuUIHandler.Instance.SelectDefaultGameObject();
         }
     }
+    #endregion
 
+    #region OnPauseMenu
     public void OnPauseMenuExit(InputAction.CallbackContext context)
     {
         if (context.performed)
@@ -153,7 +157,9 @@ public class UserInputManager : MonoBehaviour
             Cursor.visible = false;
         }
     }
+    #endregion
 
+    #region OnWin
     public void OnWinExit(InputAction.CallbackContext context)
     {
         if (context.performed)
@@ -163,6 +169,7 @@ public class UserInputManager : MonoBehaviour
             PauseMenuUIHandler.Instance.SelectDefaultGameObject();
         }
     }
+    #endregion
 
     private void OnMenuNavigationMouse(InputAction.CallbackContext context)
     {
@@ -175,5 +182,28 @@ public class UserInputManager : MonoBehaviour
             EventSystem.current.SetSelectedGameObject(null);
             Cursor.visible = true;
         }
+    }
+
+    private void LevelMoveAllPlayers(Vector3 direction)
+    {
+        ObjectController.MoveState[] playerStates = new ObjectController.MoveState[players.Length];
+        int unknownMoveCount;
+        do
+        {
+            unknownMoveCount = 0;
+            for (int i = 0; i < players.Length; i++)
+            {
+                if (playerStates[i] == ObjectController.MoveState.Unknown)
+                {
+                    playerStates[i] = players[i].TryMove(direction, true);
+                    if (playerStates[i] == ObjectController.MoveState.Unknown)
+                    {
+                        unknownMoveCount += 1;
+                    }
+                }
+            }
+        } while (unknownMoveCount != 0);
+        AudioManager.PlaySE(AudioManager.SE.Move);
+        GameManager.ShouldUpdateGameState();
     }
 }

@@ -37,6 +37,8 @@ public class LevelManager : MonoBehaviour
         // Optional if level name = enum value
         [StringValue("Level0")]
         Level0,
+        Level1,
+        Level2,
     }
 
     [SerializeField] private LevelPrefabs levelPrefabs;

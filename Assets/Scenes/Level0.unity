@@ -1213,6 +1213,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: EditorOnly
       objectReference: {fileID: 0}
+    - target: {fileID: 2645145312460903228, guid: 58a8858909e5de94b83707005f39b681, type: 3}
+      propertyPath: loadLevel
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 2645145312460903229, guid: 58a8858909e5de94b83707005f39b681, type: 3}
       propertyPath: m_RootOrder
       value: 2

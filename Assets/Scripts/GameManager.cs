@@ -26,6 +26,10 @@ public class GameManager : MonoBehaviour
         public bool win;
     }
 
+#if UNITY_EDITOR
+    [SerializeField] private LevelManager.Level loadLevel;
+#endif
+
     public static GameManager Instance { get; private set; }
     private static UserInputManager userInputManager;
     private static LevelManager levelManager;
@@ -72,6 +76,13 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log($"OnSceneLoaded: {Constants.SceneLevel}");
             currentState.screen = ScreenState.Level;
+#if UNITY_EDITOR
+            // Load level indicated in editor for testing
+            if (loadLevel != LevelManager.Level.None)
+            {
+                currentState.level = loadLevel;
+            }
+#endif
             if (currentState.level == LevelManager.Level.None)
             {
                 currentState.level = LevelManager.Level.Level0;
@@ -140,6 +151,7 @@ public class GameManager : MonoBehaviour
         currentState.targets = GameObject.FindGameObjectsWithTag(Constants.TagTarget);
         currentState.totalTarget = currentState.targets.Length;
         currentState.win = false;
+        userInputManager.UpdatePlayerReferences();
         userInputManager.ActivateUserInput(Constants.ActionMapLevel);
     }
 
@@ -169,7 +181,8 @@ public class GameManager : MonoBehaviour
             {
                 WinOverlayUIHandler.Instance.SelectDefaultGameObject();
                 userInputManager.ActivateUserInput(Constants.ActionMapWin);
-            } else
+            }
+            else
             {
                 userInputManager.ActivateUserInput(Constants.ActionMapLevel);
             }
