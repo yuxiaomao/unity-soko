@@ -10,6 +10,7 @@ public class UserInputManager : MonoBehaviour
 {
     private const float MouseMoveThresh = 0.2f;
     private PlayerInput playerInput;
+    private bool lastInputIsCursor = true;
     // In level only
     private PlayerController m_Player;
     private PlayerController Player
@@ -75,7 +76,11 @@ public class UserInputManager : MonoBehaviour
         // Set current select game object if not mouse input detected
         if (context.performed)
         {
-            MainMenuUIHandler.SelectDefaultGameObject();
+            if (lastInputIsCursor)
+            {
+                lastInputIsCursor = false;
+                MainMenuUIHandler.Instance.SelectDefaultGameObject();
+            }
             Cursor.visible = false;
         }
     }
@@ -117,7 +122,8 @@ public class UserInputManager : MonoBehaviour
         if (context.performed)
         {
             GameManager.OpenPauseMenu();
-            PauseMenuUIHandler.SelectDefaultGameObject(); // as we open menu with keyboard
+            // As we open menu with keyboard
+            PauseMenuUIHandler.Instance.SelectDefaultGameObject();
         }
     }
 
@@ -139,8 +145,22 @@ public class UserInputManager : MonoBehaviour
         // Set current select game object if not mouse input detected
         if (context.performed)
         {
-            PauseMenuUIHandler.SelectDefaultGameObject();
+            if (lastInputIsCursor)
+            {
+                lastInputIsCursor = false;
+                PauseMenuUIHandler.Instance.SelectDefaultGameObject();
+            }
             Cursor.visible = false;
+        }
+    }
+
+    public void OnWinExit(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            GameManager.OpenPauseMenu();
+            // As we open menu with keyboard
+            PauseMenuUIHandler.Instance.SelectDefaultGameObject();
         }
     }
 
@@ -151,6 +171,7 @@ public class UserInputManager : MonoBehaviour
             EventSystem.current.currentSelectedGameObject != null &&
             context.ReadValue<Vector2>().magnitude > MouseMoveThresh)
         {
+            lastInputIsCursor = true;
             EventSystem.current.SetSelectedGameObject(null);
             Cursor.visible = true;
         }

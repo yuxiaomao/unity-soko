@@ -296,6 +296,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 8c5f494b-5791-44e6-9335-c165ab03e09a
     m_ActionName: PauseMenu/NavigationNotMouse[/Keyboard/anyKey]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2645145312720828414}
+        m_TargetAssemblyTypeName: UserInputManager, Assembly-CSharp
+        m_MethodName: OnWinExit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 20922377-c743-48a7-8e5e-030c0ff70201
+    m_ActionName: Win/Exit[/Keyboard/escape]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: MainMenu
@@ -322,7 +338,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2407259182375001208}
-  - component: {fileID: 4174877872547009513}
   - component: {fileID: 5884567455101820165}
   m_Layer: 0
   m_Name: LevelManager
@@ -346,20 +361,6 @@ Transform:
   m_Father: {fileID: 2645145312460903229}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4174877872547009513
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4781019483680203527}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f746814a3b92984391774885f4c4bc8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  description: Normally only used in scene Level, put here for simplicity (group
-    Manager together)
 --- !u!114 &5884567455101820165
 MonoBehaviour:
   m_ObjectHideFlags: 0

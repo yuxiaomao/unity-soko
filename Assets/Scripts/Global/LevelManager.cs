@@ -31,14 +31,26 @@ public class LevelManager : MonoBehaviour
         public Vector2Int[] walls;
     }
 
-    public enum Level
+    public enum Level : int
     {
+        None,
+        // Optional if level name = enum value
         [StringValue("Level0")]
         Level0,
     }
 
     [SerializeField] private LevelPrefabs levelPrefabs;
     private readonly Dictionary<Level, AsyncOperationHandle<TextAsset>> levelHandles = new();
+
+    public static Level GetNextLevelOf(Level current)
+    {
+        Level next = current + 1;
+        if (!Enum.IsDefined(typeof(Level),next))
+        {
+            next = Level.None;
+        }
+        return next;
+    }
 
     /// <summary>
     /// Blocking call to load immediately the level.

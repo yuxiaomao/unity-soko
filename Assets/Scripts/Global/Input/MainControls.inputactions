@@ -486,6 +486,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Win",
+            "id": "f1229974-f9ef-4894-b0a2-ef91e93df1cc",
+            "actions": [
+                {
+                    "name": "Exit",
+                    "type": "Button",
+                    "id": "20922377-c743-48a7-8e5e-030c0ff70201",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "f19f2d38-bf00-494b-bc51-148f58a059fa",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Exit",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

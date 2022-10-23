@@ -19,7 +19,8 @@ public static class Util
 
     #region EXTENSION
     /// <summary>
-    /// Will get the string value attribute assigned for a given enums value.
+    /// Will get the string value attribute assigned for a given enums value,
+    /// if not present, return enum.ToString()
     /// </summary>
     /// <param name="value">Enum marked with attribute [StringValue("a")]</param>
     /// <returns></returns>
@@ -36,7 +37,7 @@ public static class Util
             typeof(StringValueAttribute), false) as StringValueAttribute[];
 
         // Return the first if there was a match.
-        return attribs.Length > 0 ? attribs[0].StringValue : null;
+        return attribs.Length > 0 ? attribs[0].StringValue : value.ToString();
     }
     #endregion
 }

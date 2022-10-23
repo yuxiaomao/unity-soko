@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class PauseMenuUIHandler : UIHandler
 {
@@ -10,7 +9,7 @@ public class PauseMenuUIHandler : UIHandler
     {
         Instance = this;
         menuButtonsGenerator = GetComponentInChildren<MenuButtonsGenerator>();
-        gameObject.SetActive(false);
+        Hide();
     }
 
     public override void Show()
@@ -20,19 +19,7 @@ public class PauseMenuUIHandler : UIHandler
         if (menuButtonsGenerator.GeneratedButtons == null)
         {
             menuButtonsGenerator.Generate();
-        }
-    }
-
-    /// <summary>
-    /// If EventSystem does not have current select element, select one by default
-    /// </summary>
-    public static void SelectDefaultGameObject()
-    {
-        if (EventSystem.current.currentSelectedGameObject == null ||
-            !EventSystem.current.currentSelectedGameObject.activeInHierarchy)
-        {
-            // For now we're sure that at east one button will be generated
-            EventSystem.current.SetSelectedGameObject(menuButtonsGenerator.GeneratedButtons[0].gameObject);
+            defaultSelected = menuButtonsGenerator.GeneratedButtons[0].gameObject;
         }
     }
 
