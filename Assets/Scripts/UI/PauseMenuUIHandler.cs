@@ -5,7 +5,7 @@ public class PauseMenuUIHandler : UIHandler
     public static PauseMenuUIHandler Instance { get; private set; }
     private static MenuButtonsGenerator menuButtonsGenerator;
 
-    private void Awake()
+    private void Start()
     {
         Instance = this;
         menuButtonsGenerator = GetComponentInChildren<MenuButtonsGenerator>();
@@ -32,7 +32,7 @@ public class PauseMenuUIHandler : UIHandler
 
     public static void OnClickReset()
     {
-        Debug.Log("Reset");
+        GameManager.ResetCurrentLevel();
     }
 
     public static void OnClickMainMenu()

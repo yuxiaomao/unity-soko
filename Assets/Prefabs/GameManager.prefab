@@ -33,6 +33,7 @@ Transform:
   - {fileID: 2645145312720828413}
   - {fileID: 3337571607857249926}
   - {fileID: 2407259182375001208}
+  - {fileID: 1021536172364270003}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -62,6 +63,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28e72b64a03ca174fb26802cae4bf6cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  loadLevel: 0
 --- !u!1 &2645145312720828355
 GameObject:
   m_ObjectHideFlags: 0
@@ -312,6 +314,38 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 20922377-c743-48a7-8e5e-030c0ff70201
     m_ActionName: Win/Exit[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2645145312720828414}
+        m_TargetAssemblyTypeName: UserInputManager, Assembly-CSharp
+        m_MethodName: OnLevelReset
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 7adb55a2-a7db-4e22-9216-755e32474749
+    m_ActionName: Level/Reset[/Keyboard/r]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2645145312720828414}
+        m_TargetAssemblyTypeName: UserInputManager, Assembly-CSharp
+        m_MethodName: OnLevelUndo
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: be60656a-5eb8-4e62-98c7-9244fb4a1fbc
+    m_ActionName: Level/Undo[/Keyboard/z]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: MainMenu
@@ -380,6 +414,50 @@ MonoBehaviour:
     wallPrefab: {fileID: 246908082824268878, guid: 11a1dac1c9e657047a96d57710304b94, type: 3}
   parseRoot: {fileID: 0}
   levelDataFile: {fileID: 0}
+--- !u!1 &5433570321527297730
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1021536172364270003}
+  - component: {fileID: 7296168035117043150}
+  m_Layer: 0
+  m_Name: LevelController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1021536172364270003
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5433570321527297730}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2645145312460903229}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7296168035117043150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5433570321527297730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2490eb42052389c429ba8a011eb97abd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8950996185882602059
 GameObject:
   m_ObjectHideFlags: 0

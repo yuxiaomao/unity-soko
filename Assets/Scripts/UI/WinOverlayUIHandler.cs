@@ -4,7 +4,7 @@ public class WinOverlayUIHandler : UIHandler
 {
     public static WinOverlayUIHandler Instance { get; private set; }
 
-    private void Awake()
+    private void Start()
     {
         Instance = this;
         defaultSelected = GetComponentInChildren<Button>().gameObject;

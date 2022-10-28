@@ -28,24 +28,16 @@ public class AudioManager : MonoBehaviour
     private readonly Dictionary<BGM, AsyncOperationHandle<AudioClip>> bgmHandles = new();
     private readonly Dictionary<SE, AsyncOperationHandle<AudioClip>> seHandles = new();
 
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            /// This script is suppose to be a child of GameManage game object.
-            GameManager.AssertIsChild(gameObject);
-            Instance = this;
-            // Add and configure audio sources
-            bgmAudioSource = gameObject.AddComponent<AudioSource>();
-            bgmAudioSource.loop = true;
-            seAudioSource = gameObject.AddComponent<AudioSource>();
-            seAudioSource.playOnAwake = false;
-        }
-        // Deduplication managed by GameManager
-    }
-
     private void Start()
     {
+        GameManager.AssertIsChild(gameObject);
+        Instance = this;
+        // Add and configure audio sources
+        bgmAudioSource = gameObject.AddComponent<AudioSource>();
+        bgmAudioSource.loop = true;
+        seAudioSource = gameObject.AddComponent<AudioSource>();
+        seAudioSource.playOnAwake = false;
+        // Play the first BGM
         PlayBGM(BGM.Main);
     }
 

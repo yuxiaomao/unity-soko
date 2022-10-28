@@ -12,20 +12,31 @@ public class ObjectController : MonoBehaviour
         NoMove,
     }
 
-    private const float MoveCheckDistance = 1.0f;
+    public class MoveResult
+    {
+        public readonly MoveState state;
+        public readonly bool pushed;
 
+        public MoveResult(MoveState state, bool pushed = false)
+        {
+            this.state = state;
+            this.pushed = pushed;
+        }
+    }
+
+    private const float MoveCheckDistance = 1.0f;
     private int lastStateUpdateFrame = -1;
-    private MoveState m_NextState;
-    public MoveState NextState
+    private MoveState m_CurrentState;
+    public MoveState CurrentState
     {
         get
         {
-            return lastStateUpdateFrame != Time.frameCount ? MoveState.Unknown : m_NextState;
+            return lastStateUpdateFrame != Time.frameCount ? MoveState.Unknown : m_CurrentState;
         }
         private set
         {
             lastStateUpdateFrame = Time.frameCount;
-            m_NextState = value;
+            m_CurrentState = value;
         }
     }
 
@@ -35,8 +46,9 @@ public class ObjectController : MonoBehaviour
     /// <param name="direction"></param>
     /// <param name="canPush">can push box</param>
     /// <returns></returns>
-    public MoveState TryMove(Vector3 direction, bool canPush = false)
+    public MoveResult TryMove(Vector3 direction, bool canPush = false)
     {
+        bool pushed = false;
         // Check Collision object in front of object's direction
         if (Physics.Raycast(transform.position, direction, out RaycastHit hitInfo, MoveCheckDistance))
         {
@@ -46,7 +58,7 @@ public class ObjectController : MonoBehaviour
             if (other.CompareTag(Constants.TagWall))
             {
                 // Collision with wall
-                return NextState = MoveState.NoMove;
+                return new MoveResult(CurrentState = MoveState.NoMove);
             }
             else if (other.CompareTag(Constants.TagBox))
             {
@@ -55,24 +67,25 @@ public class ObjectController : MonoBehaviour
                 // Collision with box but can not push the box
                 if (!canPush)
                 {
-                    return NextState = MoveState.NoMove;
+                    return new MoveResult(CurrentState = MoveState.NoMove);
                 }
 
                 // Collision with Box and can push, try to move the Box
-                MoveState result = other.GetComponent<BoxController>().TryMove(direction);
+                MoveState result = other.GetComponent<BoxController>().TryMove(direction).state;
                 if (result != MoveState.WillMove)
                 {
-                    return NextState = result;
+                    return new MoveResult(CurrentState = result);
                 }
                 // else WillMove
+                pushed = true;
             }
             else if (other.CompareTag(Constants.TagPlayer))
             {
                 // Collision with Player
-                MoveState playerState = other.GetComponent<PlayerController>().NextState;
+                MoveState playerState = other.GetComponent<PlayerController>().CurrentState;
                 if (playerState != MoveState.WillMove)
                 {
-                    return NextState = playerState;
+                    return new MoveResult(CurrentState = playerState);
                 }
                 // else WillMove
             }
@@ -80,6 +93,52 @@ public class ObjectController : MonoBehaviour
 
         // No collision or WillMove
         transform.position += direction;
-        return NextState = MoveState.WillMove;
+        return new MoveResult(CurrentState = MoveState.WillMove, pushed);
+    }
+
+    /// <summary>
+    /// Undo a move with its original move direction and result
+    /// </summary>
+    /// <param name="direction">original move direction</param>
+    /// <param name="moveResult">original move result</param>
+    public void UndoMove(Vector3 direction, MoveResult moveResult = default)
+    {
+        switch (moveResult.state)
+        {
+            case MoveState.NoMove:
+                {
+                    return;
+                }
+            case MoveState.WillMove:
+                {
+                    if (moveResult.pushed)
+                    {
+                        if (Physics.Raycast(transform.position, direction, out RaycastHit hitInfo, MoveCheckDistance))
+                        {
+                            GameObject other = hitInfo.collider.gameObject;
+                            if (other.CompareTag(Constants.TagBox))
+                            {
+                                other.GetComponent<BoxController>().UndoMove(direction, new MoveResult(MoveState.WillMove));
+                            }
+                            else
+                            {
+                                Debug.LogError("Try to undo a push but pushed object is not a box");
+                            }
+                        }
+                        else
+                        {
+                            Debug.LogError("Try to undo a push but can not found pushed object");
+                        }
+
+                    }
+                    transform.position -= direction;
+                    return;
+                }
+            default:
+                {
+                    Debug.LogError("Unknown MoveResult");
+                    return;
+                }
+        }
     }
 }

@@ -6,7 +6,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 /// <summary>
-/// Singleton, manage global state
+/// Singleton and manage singleton for all child gameobject,
+/// if any manager singleton do something in Awake(), it should test Instance==null.
+/// Manage global state.
 /// </summary>
 public class GameManager : MonoBehaviour
 {
@@ -21,8 +23,6 @@ public class GameManager : MonoBehaviour
     {
         public ScreenState screen;
         public LevelManager.Level level;
-        public GameObject[] targets;
-        public int totalTarget;
         public bool win;
     }
 
@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
     private static UserInputManager userInputManager;
     private static LevelManager levelManager;
+    private static LevelController levelController;
     private static readonly GameState currentState = new();
 
     private void Awake()
@@ -56,6 +57,7 @@ public class GameManager : MonoBehaviour
         SceneManager.sceneLoaded += OnSceneLoaded;
         userInputManager = GetComponentInChildren<UserInputManager>();
         levelManager = GetComponentInChildren<LevelManager>();
+        levelController = GetComponentInChildren<LevelController>();
     }
 
     private void OnDisable()
@@ -70,28 +72,39 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log($"OnSceneLoaded: {Constants.SceneMenu}");
             currentState.screen = ScreenState.Menu;
-            userInputManager.ActivateUserInput(Constants.ActionMapMainMenu);
+            Instance.StartCoroutine(OnSceneLoadedLaterMenu());
         }
         if (scene.name.CompareTo(Constants.SceneLevel) == 0)
         {
             Debug.Log($"OnSceneLoaded: {Constants.SceneLevel}");
             currentState.screen = ScreenState.Level;
-#if UNITY_EDITOR
-            // Load level indicated in editor for testing
-            if (loadLevel != LevelManager.Level.None)
-            {
-                currentState.level = loadLevel;
-            }
-#endif
-            if (currentState.level == LevelManager.Level.None)
-            {
-                currentState.level = LevelManager.Level.Level0;
-            }
-            LoadLevelInternal(currentState.level);
+            Instance.StartCoroutine(OnSceneLoadedLaterLevel());
         }
     }
 
-    #region GAME_STATE_CHANGE
+    private static IEnumerator OnSceneLoadedLaterMenu()
+    {
+        yield return new WaitWhile(() => userInputManager == null);
+        userInputManager.ActivateUserInput(Constants.ActionMapMainMenu);
+        MainMenuUIHandler.Instance.SelectDefaultGameObject();
+    }
+
+    private static IEnumerator OnSceneLoadedLaterLevel()
+    {
+        yield return new WaitWhile(() => (userInputManager == null) && (LevelManager.Instance == null));
+#if UNITY_EDITOR
+        // Load level indicated in editor for testing
+        if (Instance.loadLevel != LevelManager.Level.None)
+        {
+            currentState.level = Instance.loadLevel;
+        }
+#endif
+        if (currentState.level == LevelManager.Level.None)
+        {
+            currentState.level = LevelManager.Level.Level0;
+        }
+        LoadLevelInternal(currentState.level);
+    }
 
     public static void ExitGame()
     {
@@ -147,12 +160,16 @@ public class GameManager : MonoBehaviour
         userInputManager.DeactivateUserInput();
         levelManager.CleanGeneratedLevels();
         levelManager.LoadLevelImmediate(level);
+        levelController.InitCurrentLevelReferences();
         currentState.level = level;
-        currentState.targets = GameObject.FindGameObjectsWithTag(Constants.TagTarget);
-        currentState.totalTarget = currentState.targets.Length;
         currentState.win = false;
-        userInputManager.UpdatePlayerReferences();
         userInputManager.ActivateUserInput(Constants.ActionMapLevel);
+    }
+
+    public static void ResetCurrentLevel()
+    {
+        AudioManager.PlaySE(AudioManager.SE.Win);
+        LoadLevelInternal(currentState.level);
     }
 
     public static void OpenPauseMenu()
@@ -192,13 +209,11 @@ public class GameManager : MonoBehaviour
 
     private static void ShowWinMessage()
     {
-        Debug.Log("ShowWinMessage");
         userInputManager.DeactivateUserInput();
         WinOverlayUIHandler.Instance.Show();
         WinOverlayUIHandler.Instance.SelectDefaultGameObject();
         userInputManager.ActivateUserInput(Constants.ActionMapWin);
     }
-    #endregion
 
     /// <summary>
     /// /// Check if other is a child of GameManager
@@ -229,16 +244,8 @@ public class GameManager : MonoBehaviour
     private static IEnumerator UpdateScoreNextFrame()
     {
         yield return new WaitForFixedUpdate();
-        // Update target count
-        int withBoxTarget = 0;
-        for (int i = 0; i < currentState.targets.Length; i++)
-        {
-            if (currentState.targets[i].GetComponent<TargetController>().IsTargetWithBox())
-            {
-                withBoxTarget += 1;
-            }
-        }
-        if (withBoxTarget == currentState.totalTarget)
+        // Update win status
+        if (levelController.LevelIsWin())
         {
             currentState.win = true;
             AudioManager.PlaySE(AudioManager.SE.Win);

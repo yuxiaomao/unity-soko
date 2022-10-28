@@ -41,13 +41,21 @@ public class LevelManager : MonoBehaviour
         Level2,
     }
 
+    public static LevelManager Instance { get; set; }
     [SerializeField] private LevelPrefabs levelPrefabs;
+
     private readonly Dictionary<Level, AsyncOperationHandle<TextAsset>> levelHandles = new();
+
+    private void Start()
+    {
+        GameManager.AssertIsChild(gameObject);
+        Instance = this;
+    }
 
     public static Level GetNextLevelOf(Level current)
     {
         Level next = current + 1;
-        if (!Enum.IsDefined(typeof(Level),next))
+        if (!Enum.IsDefined(typeof(Level), next))
         {
             next = Level.None;
         }
@@ -129,7 +137,6 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    #region REGION_UNITY_EDITOR
 #if UNITY_EDITOR
     [SerializeField] private GameObject parseRoot;
     [SerializeField] private TextAsset levelDataFile;
@@ -195,6 +202,4 @@ public class LevelManager : MonoBehaviour
         return data;
     }
 #endif
-    #endregion
-
 }
