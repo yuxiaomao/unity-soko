@@ -37,6 +37,16 @@ public static class Util
         return attribs.Length > 0 ? attribs[0].StringValue : value.ToString();
     }
 
+    public static int GetEnumCount<T>() where T : Enum
+    {
+        return Enum.GetNames(typeof(T)).Length;
+    }
+
+    public static int GetEnumIndexByValue<T>(this T value) where T : Enum
+    {
+        return Array.IndexOf(Enum.GetNames(typeof(T)), value.ToString());
+    }
+
     /// <summary>
     /// Clone a serializable object
     /// </summary>

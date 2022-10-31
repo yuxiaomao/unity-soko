@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class PauseMenuUIHandler : UIHandler
 {
     public static PauseMenuUIHandler Instance { get; private set; }
@@ -14,13 +12,13 @@ public class PauseMenuUIHandler : UIHandler
 
     public override void Show()
     {
-        base.Show();
         // Delayed button generation
         if (menuButtonsGenerator.GeneratedButtons == null)
         {
             menuButtonsGenerator.Generate();
             defaultSelected = menuButtonsGenerator.GeneratedButtons[0].gameObject;
         }
+        base.Show();
     }
 
     // UI element call by UnityEvent has 0 parameter
@@ -33,6 +31,7 @@ public class PauseMenuUIHandler : UIHandler
     public static void OnClickReset()
     {
         GameManager.ResetCurrentLevel();
+        GameManager.ClosePauseMenu();
     }
 
     public static void OnClickMainMenu()

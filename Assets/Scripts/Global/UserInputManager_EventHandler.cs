@@ -14,7 +14,14 @@ public partial class UserInputManager : MonoBehaviour
     {
         if (context.performed)
         {
-            MainMenuUIHandler.OnClickExit();
+            if (MainMenuUIHandler.Instance.isActiveAndEnabled)
+            {
+                MainMenuUIHandler.OnClickExit();
+            }
+            else if (LevelSelectMenuUIHandler.Instance.isActiveAndEnabled)
+            {
+                LevelSelectMenuUIHandler.OnClickExit();
+            }
         }
     }
 
@@ -31,7 +38,14 @@ public partial class UserInputManager : MonoBehaviour
             if (lastInputIsCursor)
             {
                 lastInputIsCursor = false;
-                MainMenuUIHandler.Instance.SelectDefaultGameObject();
+                if (MainMenuUIHandler.Instance.isActiveAndEnabled)
+                {
+                    MainMenuUIHandler.Instance.SelectDefaultGameObject();
+                }
+                else if (LevelSelectMenuUIHandler.Instance.isActiveAndEnabled)
+                {
+                    LevelSelectMenuUIHandler.Instance.SelectDefaultGameObject();
+                }
             }
             Cursor.visible = false;
         }

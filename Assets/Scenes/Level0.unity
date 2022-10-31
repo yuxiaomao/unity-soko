@@ -216,7 +216,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5498563193542360077, guid: d0d37ca77bd6c83408ae04aeb7e9e18c, type: 3}
       propertyPath: m_Name
-      value: Next Level
+      value: Next Level Button
       objectReference: {fileID: 0}
     - target: {fileID: 5498563193542360083, guid: d0d37ca77bd6c83408ae04aeb7e9e18c, type: 3}
       propertyPath: m_Navigation.m_Mode
@@ -354,7 +354,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5498563193542360077, guid: d0d37ca77bd6c83408ae04aeb7e9e18c, type: 3}
       propertyPath: m_Name
-      value: Button-Pause
+      value: Pause Button
       objectReference: {fileID: 0}
     - target: {fileID: 5498563193542360083, guid: d0d37ca77bd6c83408ae04aeb7e9e18c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size

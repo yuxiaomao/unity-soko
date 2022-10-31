@@ -4,20 +4,23 @@
 public static class Constants
 {
     // Unity default tags
-    public static string TagPlayer = "Player";
+    public const string TagPlayer = "Player";
     // Additional tags
-    public static string TagWall = "Wall";
-    public static string TagBox = "Box";
-    public static string TagTarget = "Target";
-    public static string TagLevelRoot = "LevelRoot";
+    public const string TagWall = "Wall";
+    public const string TagBox = "Box";
+    public const string TagTarget = "Target";
+    public const string TagLevelRoot = "LevelRoot";
 
     // Scene names
-    public static string SceneMenu = "Menu";
-    public static string SceneLevel = "Level0";
+    public const string SceneMenu = "Menu";
+    public const string SceneLevel = "Level0";
 
     // Action map names
-    public static string ActionMapMainMenu = "MainMenu";
-    public static string ActionMapLevel = "Level";
-    public static string ActionMapPauseMenu = "PauseMenu";
-    public static string ActionMapWin = "Win";
+    public const string ActionMapMainMenu = "MainMenu";
+    public const string ActionMapLevel = "Level";
+    public const string ActionMapPauseMenu = "PauseMenu";
+    public const string ActionMapWin = "Win";
+
+    // Level
+    public const string LevelPrefix = "Level";
 }

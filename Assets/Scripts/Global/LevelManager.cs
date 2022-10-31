@@ -37,19 +37,25 @@ public class LevelManager : MonoBehaviour
         // Optional if level name = enum value
         [StringValue("Level0")]
         Level0,
+        [StringValue(Constants.LevelPrefix + "1")]
         Level1,
         Level2,
     }
 
     public static LevelManager Instance { get; set; }
     [SerializeField] private LevelPrefabs levelPrefabs;
-
+    public static readonly int LevelCount = Util.GetEnumCount<Level>();
     private readonly Dictionary<Level, AsyncOperationHandle<TextAsset>> levelHandles = new();
 
     private void Start()
     {
         GameManager.AssertIsChild(gameObject);
         Instance = this;
+    }
+
+    public static int GetLevelIndex(Level current)
+    {
+        return Util.GetEnumIndexByValue(current);
     }
 
     public static Level GetNextLevelOf(Level current)

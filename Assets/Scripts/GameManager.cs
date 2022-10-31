@@ -14,7 +14,8 @@ public class GameManager : MonoBehaviour
 {
     private enum ScreenState
     {
-        Menu,
+        MainMenu,
+        LevelSelectMenu,
         Level,
         PauseMenu,
     }
@@ -35,6 +36,7 @@ public class GameManager : MonoBehaviour
     private static LevelManager levelManager;
     private static LevelController levelController;
     private static readonly GameState currentState = new();
+    public static readonly bool[] levelWin = new bool[LevelManager.LevelCount];
 
     private void Awake()
     {
@@ -71,7 +73,7 @@ public class GameManager : MonoBehaviour
         if (scene.name.CompareTo(Constants.SceneMenu) == 0)
         {
             Debug.Log($"OnSceneLoaded: {Constants.SceneMenu}");
-            currentState.screen = ScreenState.Menu;
+            currentState.screen = ScreenState.MainMenu;
             Instance.StartCoroutine(OnSceneLoadedLaterMenu());
         }
         if (scene.name.CompareTo(Constants.SceneLevel) == 0)
@@ -168,8 +170,38 @@ public class GameManager : MonoBehaviour
 
     public static void ResetCurrentLevel()
     {
+        Debug.Log("ResetCurrentLevel");
+        if (currentState.win)
+        {
+            HideWinMessage();
+            currentState.win = false;
+        }
         AudioManager.PlaySE(AudioManager.SE.Win);
         LoadLevelInternal(currentState.level);
+    }
+
+    public static void OpenLevelSelectMenu()
+    {
+        Debug.Log("OpenLevelSelectMenu");
+        if (currentState.screen == ScreenState.MainMenu)
+        {
+            currentState.screen = ScreenState.LevelSelectMenu;
+            MainMenuUIHandler.Instance.Hide();
+            LevelSelectMenuUIHandler.Instance.Show();
+            LevelSelectMenuUIHandler.Instance.SelectDefaultGameObject();
+        }
+    }
+
+    public static void CloseLevelSelectMenu()
+    {
+        Debug.Log("CloseLevelSelectMenu");
+        if (currentState.screen == ScreenState.LevelSelectMenu)
+        {
+            currentState.screen = ScreenState.MainMenu;
+            LevelSelectMenuUIHandler.Instance.Hide();
+            MainMenuUIHandler.Instance.Show();
+            MainMenuUIHandler.Instance.SelectDefaultGameObject();
+        }
     }
 
     public static void OpenPauseMenu()
@@ -215,6 +247,13 @@ public class GameManager : MonoBehaviour
         userInputManager.ActivateUserInput(Constants.ActionMapWin);
     }
 
+    private static void HideWinMessage()
+    {
+        userInputManager.DeactivateUserInput();
+        WinOverlayUIHandler.Instance.Hide();
+        userInputManager.ActivateUserInput(Constants.ActionMapWin);
+    }
+
     /// <summary>
     /// /// Check if other is a child of GameManager
     /// </summary>
@@ -248,6 +287,7 @@ public class GameManager : MonoBehaviour
         if (levelController.LevelIsWin())
         {
             currentState.win = true;
+            levelWin[LevelManager.GetLevelIndex(currentState.level)] = true;
             AudioManager.PlaySE(AudioManager.SE.Win);
             ShowWinMessage();
         }

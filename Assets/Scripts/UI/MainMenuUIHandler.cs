@@ -1,6 +1,3 @@
-using UnityEngine;
-using UnityEngine.EventSystems;
-
 public class MainMenuUIHandler : UIHandler
 {
     public static MainMenuUIHandler Instance { get; private set; }
@@ -23,8 +20,7 @@ public class MainMenuUIHandler : UIHandler
 
     public static void OnClickLevelSelect()
     {
-        // TODO
-        Debug.Log("TODO: Open Level Select UI");
+        GameManager.OpenLevelSelectMenu();
     }
 
     public static void OnClickExit()
