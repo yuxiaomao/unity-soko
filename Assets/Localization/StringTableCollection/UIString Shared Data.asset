@@ -14,7 +14,59 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_TableCollectionName: UIString
   m_TableCollectionNameGuidString: 9e6e766c06a2431429fa03a90a21632b
-  m_Entries: []
+  m_Entries:
+  - m_Id: 2403340501385216
+    m_Key: UIString/MainMenu/NewGame
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2464252142813184
+    m_Key: UIString/MainMenu/ExitGame
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2464448771784704
+    m_Key: UIString/MainMenu/LevelSelect
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2484457006956544
+    m_Key: UIString/LevelSelectMenu/LevelN
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2484607431475200
+    m_Key: UIString/PauseMenu/Resume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2484705733378048
+    m_Key: UIString/PauseMenu/Reset
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2484727346626560
+    m_Key: UIString/PauseMenu/MainMenu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2926922876846080
+    m_Key: UIString/WinOverlay/WinMessage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2927507843842048
+    m_Key: UIString/WinOverlay/OK
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2927841903378432
+    m_Key: UIString/LevelOverlay/Pause
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2928266887036928
+    m_Key: UIString/Menu/BackToUpperMenu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2931051443519488
+    m_Key: UIString/Locale/en
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2931194817413120
+    m_Key: UIString/Locale/zh-Hans
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

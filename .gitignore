@@ -1,5 +1,6 @@
 # Copyright assets
 /[Aa]ssets/**/*.mp3
+/[Aa]ssets/Localization/Fonts/*.otf
 
 # Visual Studio additional files
 .vsconfig

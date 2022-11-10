@@ -14,14 +14,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_TableCollectionName: UIAsset
   m_TableCollectionNameGuidString: e821f4c7d114db84f80cb8b9a2a67ad8
-  m_Entries: []
+  m_Entries:
+  - m_Id: 2572125447389184
+    m_Key: UIAsset/Font
+    m_Metadata:
+      m_Items: []
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 1402734016511606788
   m_KeyGenerator:
     rid: 7369900710869073947
   references:
     version: 2
     RefIds:
+    - rid: 1402734016511606788
+      type: {class: AssetTypeMetadata, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries:
+        - m_KeyId: 2572125447389184
+          m_TableCodes:
+          - en
+          - zh-Hans
+        m_TypeString: TMPro.TMP_FontAsset, Unity.TextMeshPro, Version=0.0.0.0, Culture=neutral,
+          PublicKeyToken=null
     - rid: 7369900710869073947
       type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
       data:

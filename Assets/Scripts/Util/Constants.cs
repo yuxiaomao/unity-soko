@@ -23,4 +23,9 @@ public static class Constants
 
     // Level
     public const string LevelPrefix = "Level";
+
+    // Localization Table
+    public const string TableCollectionUIString = "UIString";
+    public const string TableCollectionUIStringLocalePrefix = "UIString/Locale/";
+    public const string TableCollectionUIAsset = "UIAsset";
 }

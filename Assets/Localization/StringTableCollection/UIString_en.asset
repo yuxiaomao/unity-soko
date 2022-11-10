@@ -16,8 +16,66 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: 9e6e766c06a2431429fa03a90a21632b, type: 2}
   m_Metadata:
-    m_Items: []
-  m_TableData: []
+    m_Items:
+    - rid: 1402734006864969728
+  m_TableData:
+  - m_Id: 2464252142813184
+    m_Localized: Exit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2403340501385216
+    m_Localized: New Game
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2464448771784704
+    m_Localized: Level Select
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2484457006956544
+    m_Localized: Level {levelName}
+    m_Metadata:
+      m_Items:
+      - rid: 1402734006864969728
+  - m_Id: 2484607431475200
+    m_Localized: Resume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2484705733378048
+    m_Localized: Reset
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2484727346626560
+    m_Localized: Main Menu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2926922876846080
+    m_Localized: Level Clear
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2927507843842048
+    m_Localized: OK
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2927841903378432
+    m_Localized: Pause
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2928266887036928
+    m_Localized: Back
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2931051443519488
+    m_Localized: English
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2931194817413120
+    m_Localized: Simplified Chinese
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 1402734006864969728
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 0000dcc94f89080000005cb999d30800

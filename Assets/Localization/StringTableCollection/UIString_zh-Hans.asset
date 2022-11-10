@@ -16,8 +16,66 @@ MonoBehaviour:
     m_Code: zh-Hans
   m_SharedData: {fileID: 11400000, guid: 9e6e766c06a2431429fa03a90a21632b, type: 2}
   m_Metadata:
-    m_Items: []
-  m_TableData: []
+    m_Items:
+    - rid: 1402734006864969729
+  m_TableData:
+  - m_Id: 2464252142813184
+    m_Localized: "\u9000\u51FA\u6E38\u620F"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2403340501385216
+    m_Localized: "\u65B0\u6E38\u620F"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2464448771784704
+    m_Localized: "\u9009\u62E9\u5173\u5361"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2484457006956544
+    m_Localized: "\u5173\u5361 {levelName}"
+    m_Metadata:
+      m_Items:
+      - rid: 1402734006864969729
+  - m_Id: 2484607431475200
+    m_Localized: "\u8FD4\u56DE\u6E38\u620F"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2484705733378048
+    m_Localized: "\u91CD\u7F6E\u5173\u5361"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2484727346626560
+    m_Localized: "\u8FD4\u56DE\u4E3B\u83DC\u5355"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2926922876846080
+    m_Localized: "\u5173\u5361\u5B8C\u6210"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2927507843842048
+    m_Localized: "\u786E\u5B9A"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2927841903378432
+    m_Localized: "\u6682\u505C"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2928266887036928
+    m_Localized: "\u8FD4\u56DE"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2931051443519488
+    m_Localized: "\u82F1\u8BED"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2931194817413120
+    m_Localized: "\u7B80\u4F53\u4E2D\u6587"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 1402734006864969729
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 0000dcc94f89080000005cb999d30800

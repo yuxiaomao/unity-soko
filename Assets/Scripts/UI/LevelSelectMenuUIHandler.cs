@@ -2,6 +2,11 @@ using UnityEngine.UI;
 
 public class LevelSelectMenuUIHandler : UIHandler
 {
+    private class LevelSelectLocalizationArgument
+    {
+        public string levelName;
+    }
+
     public static LevelSelectMenuUIHandler Instance { get; private set; }
     private static MenuButtonsGenerator menuButtonsGenerator;
     /// <summary>
@@ -22,16 +27,16 @@ public class LevelSelectMenuUIHandler : UIHandler
             {
                 levelName = levelName[5..];
             }
+            LevelManager.Level levelForLambda = level;
             ButtonInfos[i] = new MenuButtonsGenerator.ButtonInfo
             {
-                displayText = levelName,
-                OnClick = new Button.ButtonClickedEvent()
+                localizedDisplayTextEntry = "UIString/LevelSelectMenu/LevelN",
+                localizedDisplayTextArguments = new LevelSelectLocalizationArgument()
+                {
+                    levelName = levelName,
+                },
+                OnClickListener = () => GameManager.OpenLevel(levelForLambda),
             };
-            LevelManager.Level levelForLambda = level;
-            ButtonInfos[i].OnClick.AddListener(() =>
-            {
-                GameManager.OpenLevel(levelForLambda);
-            });
             menuButtonsGenerator.SetButtonInfos(ButtonInfos);
             level = LevelManager.GetNextLevelOf(level);
         }

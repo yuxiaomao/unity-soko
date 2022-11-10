@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 /// <summary>
@@ -6,11 +7,17 @@ using UnityEngine.UI;
 /// </summary>
 public class MenuButtonsGenerator : MonoBehaviour
 {
+    /// <summary>
+    /// Specify generated button info,
+    /// with either displayText (not localized) or localizedDisplayTextEntry (localized)
+    /// </summary>
     [System.Serializable]
     public class ButtonInfo
     {
         public string displayText;
-        public Button.ButtonClickedEvent OnClick;
+        public string localizedDisplayTextEntry;
+        public object localizedDisplayTextArguments;
+        public UnityAction OnClickListener;
     }
 
     [SerializeField] private Button ButtonPrefab;
@@ -27,9 +34,21 @@ public class MenuButtonsGenerator : MonoBehaviour
         GeneratedButtons = new Button[ButtonInfos.Length];
         for (int i = 0; i < ButtonInfos.Length; i++)
         {
+            ButtonInfo info = ButtonInfos[i];
             Button newButton = Instantiate(ButtonPrefab, transform);
-            newButton.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = ButtonInfos[i].displayText;
-            newButton.onClick = ButtonInfos[i].OnClick;
+            TMPro.TextMeshProUGUI textTmp = newButton.GetComponentInChildren<TMPro.TextMeshProUGUI>();
+            if (info.displayText != default)
+            {
+                textTmp.text = info.displayText;
+            }
+            else
+            {
+                LocalizedTextBase localized = textTmp.GetComponent<LocalizedTextBase>();
+                localized.SetTableEntry(info.localizedDisplayTextEntry);
+                localized.SetArguments(info.localizedDisplayTextArguments);
+                localized.Refresh();
+            }
+            newButton.onClick.AddListener(info.OnClickListener);
             GeneratedButtons[i] = newButton;
         }
     }

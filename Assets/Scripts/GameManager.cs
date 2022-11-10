@@ -86,14 +86,14 @@ public class GameManager : MonoBehaviour
 
     private static IEnumerator OnSceneLoadedLaterMenu()
     {
-        yield return new WaitWhile(() => userInputManager == null);
+        yield return new WaitUntil(() => userInputManager != null);
         userInputManager.ActivateUserInput(Constants.ActionMapMainMenu);
         MainMenuUIHandler.Instance.SelectDefaultGameObject();
     }
 
     private static IEnumerator OnSceneLoadedLaterLevel()
     {
-        yield return new WaitWhile(() => (userInputManager == null) && (LevelManager.Instance == null));
+        yield return new WaitUntil(() => (userInputManager != null) && (LevelManager.Instance != null));
 #if UNITY_EDITOR
         // Load level indicated in editor for testing
         if (Instance.loadLevel != LevelManager.Level.None)
