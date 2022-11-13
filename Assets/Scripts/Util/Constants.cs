@@ -13,7 +13,7 @@ public static class Constants
 
     // Scene names
     public const string SceneMenu = "Menu";
-    public const string SceneLevel = "Level0";
+    public const string SceneLevel = "Level";
 
     // Action map names
     public const string ActionMapMainMenu = "MainMenu";
