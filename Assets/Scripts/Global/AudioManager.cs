@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -41,21 +42,39 @@ public class AudioManager : MonoBehaviour
         PlayBGM(BGM.Main);
     }
 
-    private static void LoadAudioClipAssetAsync(BGM bgm)
+    private static void LoadAudioClipAssetAsync(BGM bgm, Action<AudioClip> actionOnCompleted)
     {
         if (!Instance.bgmHandles.ContainsKey(bgm))
         {
             string clippath = Util.GetEnumStringValue(bgm);
             Instance.bgmHandles[bgm] = UtilAddressable.LoadAssetAsync<AudioClip>(clippath);
+            Instance.bgmHandles[bgm].Completed += (h) =>
+            {
+                AudioClip ac = h.Result;
+                actionOnCompleted(ac);
+            };
+        }
+        else
+        {
+            AudioClip ac = Instance.bgmHandles[bgm].Result;
+            actionOnCompleted(ac);
         }
     }
 
-    private static void LoadAudioClipAssetAsync(SE se)
+    private static void LoadAudioClipAssetAsync(SE se, Action<AudioClip> actionOnCompleted)
     {
         if (!Instance.seHandles.ContainsKey(se))
         {
             string clippath = Util.GetEnumStringValue(se);
             Instance.seHandles[se] = UtilAddressable.LoadAssetAsync<AudioClip>(clippath);
+            Instance.seHandles[se].Completed += (h) =>
+            {
+                actionOnCompleted(h.Result);
+            };
+        }
+        else
+        {
+            actionOnCompleted(Instance.seHandles[se].Result);
         }
     }
 
@@ -65,13 +84,11 @@ public class AudioManager : MonoBehaviour
     /// <param name="bgm">AudioManager.BGM</param>
     private static void PlayBGM(BGM bgm)
     {
-        LoadAudioClipAssetAsync(bgm);
-        AudioClip clip = UtilAddressable.WaitForCompletion(Instance.bgmHandles[bgm]);
-        if (clip != default)
+        LoadAudioClipAssetAsync(bgm, (clip) =>
         {
             Instance.bgmAudioSource.clip = clip;
             Instance.bgmAudioSource.Play();
-        }
+        });
     }
 
     /// <summary>
@@ -81,11 +98,9 @@ public class AudioManager : MonoBehaviour
     /// <param name="volumeScale"></param>
     public static void PlaySE(SE se, float volumeScale = 1.0f)
     {
-        LoadAudioClipAssetAsync(se);
-        AudioClip clip = UtilAddressable.WaitForCompletion(Instance.seHandles[se]);
-        if (clip != default)
+        LoadAudioClipAssetAsync(se, (clip) =>
         {
             Instance.seAudioSource.PlayOneShot(clip, volumeScale);
-        }
+        });
     }
 }

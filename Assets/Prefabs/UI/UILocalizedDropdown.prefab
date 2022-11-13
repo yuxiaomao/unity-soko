@@ -157,7 +157,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 5191161763312299269}
   m_Template: {fileID: 5191161763312824975}
   m_CaptionText: {fileID: 2991330662073149279}
   m_CaptionImage: {fileID: 0}

@@ -11,8 +11,8 @@ public static class UtilAddressable
 {
 
     /// <summary>
-    /// Load asset asynchronously and return corresponding handle,
-    /// call WaitForCompletion(handle) to use the given asset
+    /// Load asset asynchronously and return corresponding handle.
+    /// Warning: Do not use WaitForCompletion(handle),AsyncOperationHandle.Task as it is not supported on WebGL.
     /// </summary>
     /// <typeparam name="Object"></typeparam>
     /// <param name="key">asset path string (address)</param>
@@ -20,17 +20,6 @@ public static class UtilAddressable
     public static AsyncOperationHandle<Object> LoadAssetAsync<Object>(object key)
     {
         return Addressables.LoadAssetAsync<Object>(key);
-    }
-
-    /// <summary>
-    /// Wait for completion for the given handle
-    /// </summary>
-    /// <typeparam name="Object"></typeparam>
-    /// <param name="handle"></param>
-    /// <returns>Object, if fail return default(Object)</returns>
-    public static Object WaitForCompletion<Object>(AsyncOperationHandle<Object> handle)
-    {
-        return handle.WaitForCompletion();
     }
 
     /// <summary>

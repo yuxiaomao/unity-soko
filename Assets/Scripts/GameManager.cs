@@ -161,11 +161,13 @@ public class GameManager : MonoBehaviour
     {
         userInputManager.DeactivateUserInput();
         levelManager.CleanGeneratedLevels();
-        levelManager.LoadLevelImmediate(level);
-        levelController.InitCurrentLevelReferences();
-        currentState.level = level;
-        currentState.win = false;
-        userInputManager.ActivateUserInput(Constants.ActionMapLevel);
+        levelManager.LoadLevelAsync(level, (h) =>
+        {
+            levelController.InitCurrentLevelReferences();
+            currentState.level = level;
+            currentState.win = false;
+            userInputManager.ActivateUserInput(Constants.ActionMapLevel);
+        });
     }
 
     public static void ResetCurrentLevel()

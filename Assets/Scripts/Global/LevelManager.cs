@@ -73,14 +73,14 @@ public class LevelManager : MonoBehaviour
     /// Should only be called by GameManager.
     /// </summary>
     /// <param name="level">LevelManager.Level</param>
-    public void LoadLevelImmediate(Level level)
+    /// <param name="actionOnCompleted">Action called when Completed</param>
+    public void LoadLevelAsync(Level level, Action<TextAsset> actionOnCompleted)
     {
-        LoadLevelDataFileAsync(level);
-        TextAsset ta = UtilAddressable.WaitForCompletion(levelHandles[level]);
-        if (ta != default)
+        LoadLevelDataFileAsync(level, (ta) =>
         {
-            InstantiateLevel(ta, level);
-        }
+            InstantiateLevel(ta);
+            actionOnCompleted(ta);
+        });
     }
 
     /// <summary>
@@ -100,12 +100,20 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    private void LoadLevelDataFileAsync(Level level)
+    private void LoadLevelDataFileAsync(Level level, Action<TextAsset> actionOnCompleted)
     {
         if (!levelHandles.ContainsKey(level))
         {
             string levelname = Util.GetEnumStringValue(level);
             levelHandles[level] = UtilAddressable.LoadAssetAsync<TextAsset>("Assets/Levels/" + levelname + ".json");
+            levelHandles[level].Completed += (h) =>
+            {
+                actionOnCompleted(h.Result);
+            };
+        }
+        else
+        {
+            actionOnCompleted(levelHandles[level].Result);
         }
     }
 
@@ -113,13 +121,12 @@ public class LevelManager : MonoBehaviour
     /// Instantiate a Level with corresponding asset
     /// </summary>
     /// <param name="textAsset">JSON file containing LevelData</param>
-    /// <param name="level">Level name will be used on generated node</param>
-    private void InstantiateLevel(TextAsset textAsset, Level level = Level.Level0)
+    private void InstantiateLevel(TextAsset textAsset)
     {
         if (textAsset != null)
         {
             LevelData data = JsonUtility.FromJson<LevelData>(textAsset.ToString());
-            GameObject levelNode = new("_gen" + Util.GetEnumStringValue(level));
+            GameObject levelNode = new("_gen" + textAsset.name);
             levelNode.tag = Constants.TagLevelRoot;
             InstantiateObject(levelPrefabs.playerPrefab, data.players, Constants.TagPlayer, levelNode);
             InstantiateObject(levelPrefabs.boxPrefab, data.boxes, Constants.TagBox, levelNode);
