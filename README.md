@@ -7,11 +7,11 @@ Learning project
 # Dependencies
 - Unity Editor Version: `2021.3.12f1`
 - `Assets/Audio/BGM/`: 魔王魂 MaouDamashii
-  - `maou_bgm_8bit01.mp3`: [8bit01](https://maou.audio/bgm_8bit01/)
+  - `maou_bgm_8bit01.mp3`: [8bit01](https://maou.audio/sound/bgm/maou_bgm_8bit01.mp3)
 - `Assets/Audio/SE/`: 小森平 Taira Komori
-  - `move.mp3`: [select01](https://taira-komori.jpn.org/game01.html)
-  - `error.mp3`: [blip02](https://taira-komori.jpn.org/game01.html)
-  - `win.mp3`: [crrect_answer2](https://taira-komori.jpn.org/game01.html)
+  - `move.mp3`: [select01](https://taira-komori.jpn.org/sound/game01/select01.mp3)
+  - `error.mp3`: [blip02](https://taira-komori.jpn.org/sound/game01/blip02.mp3)
+  - `win.mp3`: [crrect_answer2](https://taira-komori.jpn.org/sound/game01/crrect_answer2.mp3)
 - `Assets/Localization/Fonts/`: 思源黑体 Source Han Sans
   - `SourceHanSansCN-VF.otf`: [Subset Variable Simplified Chinese OTF](https://github.com/adobe-fonts/source-han-sans/raw/release/Variable/OTF/Subset/SourceHanSansCN-VF.otf)
 
